@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
    <meta charset="UTF-8">
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -8,5 +9,8 @@
 </head>
 <body>
    <h1 th:text="${message}">Message</h1>
+   <form th:action="@{/logout}" method="post">
+      <input type="submit" value="Sign Out"/>
+  </form>
 </body>
 </html>

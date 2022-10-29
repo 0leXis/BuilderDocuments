@@ -13,7 +13,7 @@ import com.builder.documents.builderdocuments.models.LoginInfoEntity;
 import com.builder.documents.builderdocuments.models.repositories.LoginInfoRepository;
 
 @Controller
-@RequestMapping("/index")
+@RequestMapping("/")
 public class IndexController {
 
    @Autowired
@@ -23,7 +23,7 @@ public class IndexController {
    public String printHello(ModelMap model) {
       Optional<LoginInfoEntity> loginInfo = loginInfos.findById(1L);
       if(loginInfo.isPresent())
-         model.addAttribute("message", loginInfo.get().getLogin() + " " + loginInfo.get().getPassword());
+         model.addAttribute("message", loginInfo.get().getLogin() + " " + loginInfo.get().getPassword()+ " " + loginInfo.get().getRole());
       else
          model.addAttribute("message", "Hello Spring MVC Framework!");
       return "index";

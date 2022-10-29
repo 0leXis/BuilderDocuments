@@ -8,6 +8,7 @@ import java.io.Serializable;
 public class LoginInfoEntity implements Serializable {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idlogininfo")
     private long idLoginInfo; 
 
@@ -17,19 +18,18 @@ public class LoginInfoEntity implements Serializable {
     @Column(name = "password")
     private String password;
 
-    @Column(name = "salt")
-    private String salt;
-
     @Column(name = "staff")
-    private long staff; //TODO link
+    private Long staff; //TODO link
+
+    @Column(name = "role")
+    private Role role;
 
     public LoginInfoEntity() {}
 
-    public LoginInfoEntity(long idLoginInfo, String login, String password, String salt, long staff) { //TODO link
+    public LoginInfoEntity(long idLoginInfo, String login, String password, String salt, Long staff) { //TODO link
         this.idLoginInfo = idLoginInfo;
         this.login = login;
         this.password = password;
-        this.salt = salt;
         this.staff = staff;
     }
 
@@ -57,19 +57,19 @@ public class LoginInfoEntity implements Serializable {
         this.password = password;
     }
 
-    public String getSalt() {
-        return salt;
-    }
-
-    public void setSalt(String salt) {
-        this.salt = salt;
-    }
-
-    public long getStaff() {
+    public Long getStaff() {
         return staff;
     }
 
-    public void setStaff(long staff) {
+    public void setStaff(Long staff) {
         this.staff = staff;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 }

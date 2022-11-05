@@ -6,11 +6,59 @@ xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <title>Document</title>
+   <link href="../static/style.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
-   <h1 th:text="${message}">Message</h1>
-   <form th:action="@{/logout}" method="post">
-      <input type="submit" value="Sign Out"/>
-  </form>
+   <header>
+      <div class="padding-10 flex-center-block gradient-fill-blue">
+         <img src="../static/BDocsLogo.png" th:src="@{static/BDocsLogo.png}" alt="Builder's Documents" width="150" height="57" />
+      </div>
+      <div class="flex-space-between nav-container">
+         <div class="nav-block-submit"></div>
+         <nav class="flex-center-block">
+            <a class="nav-block flex-center-block" href="/documents.html">Документы</a>
+            <a class="nav-block flex-center-block" href="/staff.html">Сотрудники</a>
+            <a class="nav-block flex-center-block" href="/users.html">Пользователи</a>
+         </nav>
+         <form th:action="@{/logout}" method="post">
+            <input class="nav-block-submit" type="submit" value="Выход"/>
+         </form>
+      </div>
+   </header>
+   <div>
+      <div class="flex-center">Список пользователей</div>
+      <table>
+         <tr class="table-header">
+            <td>Id</td>
+            <td>Логин</td>
+            <td>Роль</td>
+         </tr>
+         <tr>
+            <td>1</td>
+            <td>2</td>
+            <td>3</td>
+         </tr>
+         <tr>
+            <td>1</td>
+            <td>2</td>
+            <td>3</td>
+         </tr>
+         <tr>
+            <td>1</td>
+            <td>2</td>
+            <td>3</td>
+         </tr>
+         <tr>
+            <td>1</td>
+            <td>2</td>
+            <td>3</td>
+         </tr>
+         <tr>
+            <td>1</td>
+            <td>2</td>
+            <td>3</td>
+         </tr>
+      </table>
+   </div>
 </body>
 </html>

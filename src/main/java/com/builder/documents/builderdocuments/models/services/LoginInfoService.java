@@ -1,5 +1,6 @@
 package com.builder.documents.builderdocuments.models.services;
 
+import java.util.Optional;
 import java.util.regex.Pattern;
 
 import javax.persistence.*;
@@ -24,7 +25,7 @@ public class LoginInfoService implements ILoginInfoService {
     @Autowired
     BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public String saveUser(LoginInfoEntity info) {
+    public String addUser(LoginInfoEntity info) {
         LoginInfoEntity user = loginInfos.findByLogin(info.getLogin());
         if(user != null){
             return "User already exists";
@@ -36,11 +37,37 @@ public class LoginInfoService implements ILoginInfoService {
             return "Password length must be 8 or higher, should include at least one uppercase letter, lowercase letter and digit";
         }
 
-      //TODO also get staff info
-      info.setStaff(null);
-      info.setRole(Role.USER);
+      info.setRole(Role.USER); //TODO Roles
       info.setPassword(bCryptPasswordEncoder.encode(info.getPassword()));
       loginInfos.save(info);
       return null;
+    }
+
+    public String editUser(LoginInfoEntity info) {
+        Optional<LoginInfoEntity> user = loginInfos.findById(info.getIdLoginInfo());
+        if(user == null){
+            return "User doesn't exists";
+        }
+        if(info.getLogin() == null || info.getPassword() == null){
+            return "Enter login and password";
+        }
+        if(!isMatchSecurityRegex.matcher(info.getPassword()).matches()){
+            return "Password length must be 8 or higher, should include at least one uppercase letter, lowercase letter and digit";
+        }
+
+      info.setRole(Role.USER); //TODO Roles
+      info.setPassword(bCryptPasswordEncoder.encode(info.getPassword()));
+      loginInfos.save(info);
+      return null;
+    }
+
+    public String deleteUser(LoginInfoEntity info) {
+        Optional<LoginInfoEntity> user = loginInfos.findById(info.getIdLoginInfo());
+        if(user == null){
+            return "User doesn't exists";
+        }
+
+        loginInfos.delete(info);
+        return null;
     }
 }

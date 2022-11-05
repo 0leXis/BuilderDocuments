@@ -52,9 +52,50 @@ table {
     src: url(../static/fonts/Ubuntu-R.ttf);
 }
 
+@font-face {
+    font-family: ubuntu-mono-bold;
+    src: url(../static/fonts/UbuntuMono-B.ttf);
+}
+
 body{
     font-family: ubuntu-regular, Arial, Helvetica, sans-serif;
     color:#1d4561;
+}
+
+.margin-all-20{
+    margin: 20px;
+}
+
+.margin-top-20{
+    margin-top: 20px;
+}
+
+.margin-left-20{
+    margin-left: 20px;
+}
+
+.margin-right-20{
+    margin-right: 20px;
+}
+
+.margin-bottom-20{
+    margin-bottom: 20px;
+}
+
+.margin-top-10{
+    margin-top: 10px;
+}
+
+.margin-left-10{
+    margin-left: 10px;
+}
+
+.padding-10{
+    padding: 10px;
+}
+
+.full-width{
+    width: 100%;
 }
 
 .flex-center-body{
@@ -69,6 +110,22 @@ body{
     justify-content: center;
 }
 
+.flex-space-between{
+    display: flex;
+    justify-content: space-between;
+}
+
+.flex-center-block{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.flex-space-around{
+    display: flex;
+    justify-content: space-around;
+}
+
 .flex-column{
     display: flex;
     flex-direction: column;
@@ -80,8 +137,11 @@ body{
     align-items: center;
 }
 
-.form-container{
+.gradient-fill-blue{
     background: linear-gradient(#c7e8ff, #d5e0e7);
+}
+
+.form-container{
     background-repeat: no-repeat;
     background-attachment: fixed;
     border-radius: 10px;
@@ -91,6 +151,21 @@ body{
     padding: 20px;
     width: 410px;
     height: 410px;
+}
+
+.form-hidden-container{
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 100vw;
+    height: 100vh;
+    background-color: #000000ab;
+}
+
+.form-full-size{
+    flex-grow: 1; 
+    flex-shrink: 1;
+    padding: 20px;
 }
 
 .form-border{
@@ -129,7 +204,7 @@ input[type=text]:focus {
     font-size: 100%;
 }
 
-input[type=submit] {
+input[type=submit], button {
     border:2px solid #A67330; 
     padding:5px 15px; 
     background:#FFD195; 
@@ -140,7 +215,7 @@ input[type=submit] {
     font-size: 100%;
 }
 
-input[type=submit]:hover {
+input[type=submit]:hover, button:hover {
     border:2px solid #A67330; 
     background: #BFA584;
     color:#1d4561;
@@ -156,6 +231,107 @@ input[type=submit]:hover {
     color:#1d4561;
 }
 
-.margin-top-20{
-    margin-top: 20px;
+
+.nav-block{
+    width: 150px;
+    height: 30px;
+    background: #FFD195;
+    border-style: solid;
+    border-color: #A67330;
+    border-width: 0px 1px 0px 0px;
+    font-family: ubuntu-mono-bold, Arial, Helvetica, sans-serif;
 }
+
+.nav-block-current{
+    width: 150px;
+    height: 30px;
+    background: #A67330;
+    color: #FFD195;
+    border-style: solid;
+    border-color: #A67330;
+    border-width: 0px 1px 0px 0px;
+    font-family: ubuntu-mono-bold, Arial, Helvetica, sans-serif;
+}
+
+.nav-block:first-child{
+    border-width: 0px 1px 0px 1px;
+}
+
+a.nav-block, input[type=submit].nav-block-submit {
+    color:#1d4561;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+a.nav-block:hover, input[type=submit].nav-block-submit:hover {
+    color:#FFD195;
+    background: #1d4561;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.nav-container{
+    background: #FFD195;
+    border-style: solid;
+    border-color: #A67330;
+    border-width: 1px 0px 1px 0px;
+}
+
+.nav-block-submit{
+    width: 90px;
+    height: 30px;
+    font-family: ubuntu-mono-bold, Arial, Helvetica, sans-serif;
+}
+
+input[type=submit].nav-block-submit{
+    border-width: 0px 1px 0px 1px;
+    border-radius: 0px;
+}
+
+.table-big{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    border-radius: 15px 15px 5px 5px;
+    border-style: solid;
+    border-width: 1px 1px 0px 1px;
+    border-color: #A67330;
+    overflow: hidden;
+}
+
+table{
+    width: 100%;
+}
+
+.table-big tr.table-header{
+    background-color: #FFD195;
+}
+
+.table-big tr{
+    height: 30px;
+    border-style: solid;
+    border-width: 0px 0px 1px 0px;
+    border-color: #A67330;
+    background-color: white;
+}
+
+.table-big tr td{
+    text-align: center;
+    vertical-align: middle;
+}
+
+.table-big tr td button{
+    padding: 0px;
+    border-width: 0px;
+    width: 25px;
+}
+
+.hidden{
+    display: none;
+}
+
+.current-page a{
+ text-decoration: none;
+ pointer-events: none;
+}
+/*TODO Pagination style*/

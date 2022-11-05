@@ -18,26 +18,22 @@ public class LoginInfoEntity implements Serializable {
     @Column(name = "password")
     private String password;
 
-    @Column(name = "staff")
-    private Long staff; //TODO link
-
     @Column(name = "role")
     private Role role;
 
     public LoginInfoEntity() {}
 
-    public LoginInfoEntity(long idLoginInfo, String login, String password, String salt, Long staff) { //TODO link
+    public LoginInfoEntity(long idLoginInfo, String login, String password, String salt) { //TODO link
         this.idLoginInfo = idLoginInfo;
         this.login = login;
         this.password = password;
-        this.staff = staff;
     }
 
-    public long getId() {
+    public long getIdLoginInfo() {
         return idLoginInfo;
     }
 
-    public void setId(long idLoginInfo) {
+    public void setIdLoginInfo(long idLoginInfo) {
         this.idLoginInfo = idLoginInfo;
     }
 
@@ -55,14 +51,6 @@ public class LoginInfoEntity implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public Long getStaff() {
-        return staff;
-    }
-
-    public void setStaff(Long staff) {
-        this.staff = staff;
     }
 
     public Role getRole() {

@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+   xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+<head>
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Document</title>
+   <link href="../static/style.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+   <header>
+      <div class="padding-10 flex-center-block gradient-fill-blue">
+         <img src="../static/BDocsLogo.png" th:src="@{static/BDocsLogo.png}" alt="Builder's Documents" width="150"
+            height="57" />
+      </div>
+      <div class="flex-space-between nav-container">
+         <div class="nav-block-submit"></div>
+         <nav class="flex-center-block">
+            <a class="nav-block flex-center-block" href="/documents.html">Документы</a>
+            <a class="nav-block flex-center-block" href="/staff.html">Сотрудники</a>
+            <h1 class="nav-block-current flex-center-block" href="/users.html">Пользователи</h1>
+         </nav>
+         <form th:action="@{/logout}" method="post">
+            <input class="nav-block-submit" type="submit" value="Выход" />
+         </form>
+      </div>
+   </header>
+   <div class="flex-center">
+      <div class="flex-column-center form-full-size gradient-fill-blue form-container margin-all-20">
+         <div class="flex-center margin-bottom-20">Список сотрудников</div>
+         <div class="table-big">
+            <table>
+               <tr class="table-header">
+                  <td>Id</td>
+                  <td>Имя</td>
+                  <td>Фамилия</td>
+                  <td>Должность</td>
+                  <td>Зарплата</td>
+                  <td>Редактировать</td>
+                  <td>Удалить</td>
+               </tr>
+               <tr th:each="employee : ${staff}">
+                  <td th:text="${employee.idStaff}">1</td>
+                  <td th:text="${employee.name}">Name</td>
+                  <td th:text="${employee.lastname}">Lastname</td>
+                  <td th:text="${employee.position.name}">Position</td>
+                  <td th:text="${employee.salary}">Salary</td>
+                  <td><button onclick="editStaff(1)" th:onclick="'editStaff('+${employee.idStaff}+')'">✎</button></td>
+                  <td><button onclick="deleteStaff(1)" th:onclick="'deleteStaff('+${employee.idStaff}+')'">❌</button>
+                  </td>
+               </tr>
+            </table>
+         </div>
+         <div th:if="${staff.totalPages gt 0}" class="margin-top-20 flex-center">
+            <span>Страница</span>
+            <ul class="flex-center">
+               <li th:classappend="${1 eq currentStaffPage} ? 'current-page'">
+                  <a class="margin-left-10" th:href="@{/staff?staffPage=1&loginPage={currentLoginPage}(currentLoginPage=${currentLoginPage})}">1</a>
+               </li>
+               <th:block th:switch="${staff.totalPages lt 6}" class="flex-center">
+                  <th:block th:case="true" class="flex-center">
+                     <li th:each="page : ${#numbers.sequence( 2, staff.totalPages - 1, 1)}"
+                        th:classappend="${page eq currentStaffPage} ? 'current-page'">
+                        <a class="margin-left-10" th:href="@{/staff?staffPage={currentStaffPage}&loginPage={currentLoginPage}(currentStaffPage=${page},currentLoginPage=${currentLoginPage})}" th:text="${page}">2</a>
+                     </li>
+                  </th:block>
+                  <th:block th:case="false" class="flex-center">
+                     <li th:if="${currentStaffPage gt 2}">
+                        <span class="margin-left-10">...</span>
+                     </li>
+                     <li th:each="page : ${#numbers.sequence( currentStaffPage - 1, currentStaffPage + 1, 1)}"
+                        th:classappend="${page eq currentStaffPage} ? 'current-page'">
+                        <a class="margin-left-10" th:if="${page gt 1 and page lt staff.totalPages}"
+                           th:href="@{/staff?staffPage={currentStaffPage}&loginPage={currentLoginPage}(currentStaffPage=${page},currentLoginPage=${currentLoginPage})}" th:text="${page}">3</a>
+                     </li>
+                     <li th:if="${currentStaffPage lt staff.totalPages - 2}">
+                        <span class="margin-left-10">...</span>
+                     </li>
+                  </th:block>
+               </th:block>
+               <li th:if="${staff.totalPages gt 1}"
+                  th:classappend="${staff.totalPages eq currentStaffPage} ? 'current-page'">
+                  <a class="margin-left-10" th:href="@{/staff?staffPage={currentStaffPage}&loginPage={currentLoginPage}(currentStaffPage=${staff.totalPages},currentLoginPage=${currentLoginPage})}"
+                     th:text="${staff.totalPages}">4</a>
+               </li>
+            </ul>
+         </div>
+      </div>
+      <div class="flex-column-center form-full-size gradient-fill-blue form-container margin-all-20">
+         <div class="flex-center margin-bottom-20">Аккаунты без профиля</div>
+         <div class="table-big">
+            <table>
+               <tr class="table-header">
+                  <td>Id</td>
+                  <td>Логин</td>
+                  <td>Добавить профиль</td>
+               </tr>
+               <tr th:each="user : ${users}">
+                  <td th:text="${user.idLoginInfo}">1</td>
+                  <td th:id="'user'+${user.idLoginInfo}+'login'" th:text="${user.login}">Login</td>
+                  <td><button onclick="addStaff(1)" th:onclick="'addStaff('+${user.idLoginInfo}+')'">➕</button></td>
+               </tr>
+            </table>
+         </div>
+         <div th:if="${users.totalPages gt 0}" class="margin-top-20 flex-center">
+            <span>Страница</span>
+            <ul class="flex-center">
+               <li th:classappend="${1 eq currentLoginPage} ? 'current-page'">
+                  <a class="margin-left-10" th:href="@{/staff?staffPage={currentStaffPage}&loginPage=1(currentStaffPage=${currentStaffPage})}">1</a>
+               </li>
+               <th:block th:switch="${users.totalPages lt 6}" class="flex-center">
+                  <th:block th:case="true" class="flex-center">
+                     <li th:each="page : ${#numbers.sequence( 2, users.totalPages - 1, 1)}"
+                        th:classappend="${page eq currentLoginPage} ? 'current-page'">
+                        <a class="margin-left-10" th:href="@{/staff?staffPage={currentStaffPage}&loginPage={currentLoginPage}(currentLoginPage=${page}, currentStaffPage=${currentStaffPage})}" th:text="${page}">2</a>
+                     </li>
+                  </th:block>
+                  <th:block th:case="false" class="flex-center">
+                     <li th:if="${currentLoginPage gt 2}">
+                        <span class="margin-left-10">...</span>
+                     </li>
+                     <li th:each="page : ${#numbers.sequence( currentLoginPage - 1, currentLoginPage + 1, 1)}"
+                        th:classappend="${page eq currentLoginPage} ? 'current-page'">
+                        <a class="margin-left-10" th:if="${page gt 1 and page lt users.totalPages}"
+                           th:href="@{/staff?staffPage={currentStaffPage}&loginPage={currentLoginPage}(currentLoginPage=${page}, currentStaffPage=${currentStaffPage})}" th:text="${page}">3</a>
+                     </li>
+                     <li th:if="${currentLoginPage lt users.totalPages - 2}">
+                        <span class="margin-left-10">...</span>
+                     </li>
+                  </th:block>
+               </th:block>
+               <li th:if="${users.totalPages gt 1}"
+                  th:classappend="${users.totalPages eq currentLoginPage} ? 'current-page'">
+                  <a class="margin-left-10" th:href="@{/staff?staffPage={currentStaffPage}&loginPage={currentLoginPage}(currentLoginPage=${users.totalPages}, currentStaffPage=${currentStaffPage})}"
+                     th:text="${users.totalPages}">4</a>
+               </li>
+            </ul>
+         </div>
+      </div>
+   </div>
+   <div id="editUserFormContainer" class="form-hidden-container flex-center-block hidden">
+      <div class="flex-column-center form-450 gradient-fill-blue form-container margin-all-20">
+         <h2 id="addEditHeader">Редактировать сотрудника</h2>
+         <form th:action="@{/staff}" method="post" class="form-border">
+            <input type="hidden" value="edit" name="mode"/>
+            <input type="hidden" value="0" name="idStaff" id="addEditIdStaffField"/>
+            <input type="hidden" value="0" name="idLoginInfo" id="addEditIdLoginInfoField"/>
+            <div class="form-field margin-top-20">
+               <label class="form-label" for="addEditName"> Имя: 
+               </label>
+               <input class="form-input-300" type="text" name="name" id="addEditName"/> 
+            </div>
+            <div class="form-field">
+               <label class="form-label" for="addEditLastname"> Фамилия: 
+               </label>
+               <input class="form-input-300" type="text" name="lastname" id="addEditLastname"/> 
+            </div>
+            <div class="form-field">
+               <label class="form-label" for="addEditPosition"> Должность: 
+               </label>
+               <select name="position" id="addEditPosition">
+               </select>
+            </div>
+            <div class="form-field">
+               <label class="form-label" for="addEditSalary"> Зарплата: <!-- TODO Validation -->
+               </label>
+               <input class="form-input-300" type="text" name="lastname" id="addEditSalary"/> 
+            </div>
+            <div class="flex-center">
+               <div class="form-field">
+                  <input type="submit" value="Редактировать" />
+               </div>
+               <div class="form-field">
+                  <button type="button" onclick="cancelAddEditStaff()">Отмена</button>
+               </div>
+            </div>
+         </form>
+      </div>
+   </div>
+   <div id="deleteUserFormContainer" class="form-hidden-container flex-center-block hidden">
+      <div class="flex-column-center gradient-fill-blue form-container margin-all-20">
+         <form th:action="@{/staff}" method="post" class="form-border">
+            <div>Сотрудник будет удален. Вы уверены?</div>
+            <input type="hidden" value="delete" name="mode"/>
+            <input type="hidden" value="0" name="idStaff" id="deleteIdStaffField"/>
+            <div class="flex-center">
+               <div class="form-field">
+                  <input type="submit" value="Да" />
+               </div>
+               <div class="form-field">
+                  <button type="button" onclick="cancelDeleteStaff()">Отмена</button>
+               </div>
+            </div>
+         </form>
+      </div>
+   </div>
+</body>
+</html>

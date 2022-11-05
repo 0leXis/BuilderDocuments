@@ -66,6 +66,7 @@ public class UsersController {
             model.addAttribute("success", successMessage);
         else
             model.addAttribute("error", errorMessage);
-        return "redirect:/users";
+
+        return usersGet(model, Optional.of("1"));
     }
 }

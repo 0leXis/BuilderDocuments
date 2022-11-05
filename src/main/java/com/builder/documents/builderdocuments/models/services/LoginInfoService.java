@@ -48,6 +48,10 @@ public class LoginInfoService implements ILoginInfoService {
         if(user == null){
             return "User doesn't exists";
         }
+        LoginInfoEntity userByLogin = loginInfos.findByLogin(info.getLogin());
+        if(userByLogin != null && userByLogin != user.get()){
+            return "There is another user with same login";
+        }
         if(info.getLogin() == null || info.getPassword() == null){
             return "Enter login and password";
         }

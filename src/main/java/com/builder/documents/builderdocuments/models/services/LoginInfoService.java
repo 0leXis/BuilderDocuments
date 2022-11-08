@@ -25,6 +25,7 @@ public class LoginInfoService implements ILoginInfoService {
     @Autowired
     BCryptPasswordEncoder bCryptPasswordEncoder;
 
+    @Override
     public String addUser(LoginInfoEntity info) {
         LoginInfoEntity user = loginInfos.findByLogin(info.getLogin());
         if(user != null){
@@ -43,6 +44,7 @@ public class LoginInfoService implements ILoginInfoService {
       return null;
     }
 
+    @Override
     public String editUser(LoginInfoEntity info) {
         Optional<LoginInfoEntity> user = loginInfos.findById(info.getIdLoginInfo());
         if(user == null){
@@ -65,6 +67,7 @@ public class LoginInfoService implements ILoginInfoService {
       return null;
     }
 
+    @Override
     public String deleteUser(LoginInfoEntity info) {
         Optional<LoginInfoEntity> user = loginInfos.findById(info.getIdLoginInfo());
         if(user == null){

@@ -44,10 +44,10 @@
                </tr>
                <tr th:each="employee : ${staff}">
                   <td th:text="${employee.idStaff}">1</td>
-                  <td th:text="${employee.name}">Name</td>
-                  <td th:text="${employee.lastname}">Lastname</td>
-                  <td th:text="${employee.position.name}">Position</td>
-                  <td th:text="${employee.salary}">Salary</td>
+                  <td th:id="'staff'+${employee.idStaff}+'name'" th:text="${employee.name}" id="staff1name" >Name</td>
+                  <td th:id="'staff'+${employee.idStaff}+'lastname'" th:text="${employee.lastname}" id="staff1lastname">Lastname</td>
+                  <td th:id="'staff'+${employee.idStaff}+'position'" th:data-value="${employee.position.idPositions}" th:text="${employee.position.name}" id="staff1position">Position</td>
+                  <td th:id="'staff'+${employee.idStaff}+'salary'" th:text="${employee.salary}" id="staff1salary">Salary</td>
                   <td><button onclick="editStaff(1)" th:onclick="'editStaff('+${employee.idStaff}+')'">✎</button></td>
                   <td><button onclick="deleteStaff(1)" th:onclick="'deleteStaff('+${employee.idStaff}+')'">❌</button>
                   </td>
@@ -141,13 +141,13 @@
          </div>
       </div>
    </div>
-   <div id="editUserFormContainer" class="form-hidden-container flex-center-block hidden">
+   <div id="addEditStaffFormContainer" class="form-hidden-container flex-center-block hidden">
       <div class="flex-column-center form-450 gradient-fill-blue form-container margin-all-20">
-         <h2 id="addEditHeader">Редактировать сотрудника</h2>
+         <h2 id="addEditHeader">Редактировать сотрудника</h2> <!--TODO change header-->
          <form th:action="@{/staff}" method="post" class="form-border">
-            <input type="hidden" value="edit" name="mode"/>
+            <input type="hidden" value="edit" name="mode" id="addEditModeField"/>
             <input type="hidden" value="0" name="idStaff" id="addEditIdStaffField"/>
-            <input type="hidden" value="0" name="idLoginInfo" id="addEditIdLoginInfoField"/>
+            <input type="hidden" value="0" name="loginInfo" id="addEditIdLoginInfoField"/>
             <div class="form-field margin-top-20">
                <label class="form-label" for="addEditName"> Имя: 
                </label>
@@ -162,12 +162,13 @@
                <label class="form-label" for="addEditPosition"> Должность: 
                </label>
                <select name="position" id="addEditPosition">
+                  <option th:each="position : ${positions}" th:text="${position.name}" th:value="${position.idPositions}">Администратор</option>
                </select>
             </div>
             <div class="form-field">
                <label class="form-label" for="addEditSalary"> Зарплата: <!-- TODO Validation -->
                </label>
-               <input class="form-input-300" type="text" name="lastname" id="addEditSalary"/> 
+               <input class="form-input-300" type="text" name="salary" id="addEditSalary"/> 
             </div>
             <div class="flex-center">
                <div class="form-field">
@@ -180,7 +181,7 @@
          </form>
       </div>
    </div>
-   <div id="deleteUserFormContainer" class="form-hidden-container flex-center-block hidden">
+   <div id="deleteStaffFormContainer" class="form-hidden-container flex-center-block hidden">
       <div class="flex-column-center gradient-fill-blue form-container margin-all-20">
          <form th:action="@{/staff}" method="post" class="form-border">
             <div>Сотрудник будет удален. Вы уверены?</div>
@@ -197,5 +198,8 @@
          </form>
       </div>
    </div>
+
+   <script src="../static/scripts/formUtilities.js"></script>
+   <script src="../static/scripts/staff.js"></script>
 </body>
 </html>

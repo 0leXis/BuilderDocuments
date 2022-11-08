@@ -28,7 +28,7 @@ public class StaffEntity implements Serializable {
 
     @OneToOne
     @JoinColumn(name = "logininfo", referencedColumnName = "idlogininfo")
-    private LoginInfoEntity logininfo;
+    private LoginInfoEntity loginInfo;
 
     public StaffEntity() {}
 
@@ -38,7 +38,7 @@ public class StaffEntity implements Serializable {
         this.lastname = lastname;
         this.position = position;
         this.salary = salary;
-        this.logininfo = loginInfo;
+        this.loginInfo = loginInfo;
     }
 
     public long getIdStaff() {
@@ -82,10 +82,10 @@ public class StaffEntity implements Serializable {
     }
 
     public LoginInfoEntity getLoginInfo() {
-        return logininfo;
+        return loginInfo;
     }
 
     public void setLoginInfo(LoginInfoEntity loginInfo) {
-        this.logininfo = loginInfo;
+        this.loginInfo = loginInfo;
     }
 }

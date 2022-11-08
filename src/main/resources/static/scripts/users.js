@@ -27,3 +27,5 @@ function cancelDeleteUser(){
     let deleteUserFormContainer = document.getElementById("deleteUserFormContainer");
     deleteUserFormContainer.classList.add("hidden");
 }
+
+/* TODO Refactor all scripts and html */

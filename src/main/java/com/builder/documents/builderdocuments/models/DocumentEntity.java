@@ -37,9 +37,12 @@ public class DocumentEntity implements Serializable {
     @Column(name = "hash")
     private String hash;
 
+    @Column(name = "path")
+    private String path;
+
     public DocumentEntity() {}
 
-    public DocumentEntity(long idDocument, String name, StaffEntity creator, DocumentTemplateEntity template, Date dateCreated, Date dateModified, String description, String hash) {
+    public DocumentEntity(long idDocument, String name, StaffEntity creator, DocumentTemplateEntity template, Date dateCreated, Date dateModified, String description, String hash, String path) {
         this.idDocument = idDocument;
         this.name = name;
         this.creator = creator;
@@ -48,6 +51,7 @@ public class DocumentEntity implements Serializable {
         this.dateModified = dateModified;
         this.description = description;
         this.hash = hash;
+        this.path = path;
     }
 
     public long getIdDocument() {
@@ -113,5 +117,12 @@ public class DocumentEntity implements Serializable {
     public void setHash(String hash) {
         this.hash = hash;
     }
+    
+    public String getPath() {
+        return path;
+    }
 
+    public void setPath(String path) {
+        this.path = path;
+    }
 }

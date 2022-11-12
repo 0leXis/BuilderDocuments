@@ -4,6 +4,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.ui.ModelMap;
 
 import java.util.Optional;
@@ -13,19 +14,19 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
 import com.builder.documents.builderdocuments.models.DocumentEntity;
-import com.builder.documents.builderdocuments.models.LoginInfoEntity;
-import com.builder.documents.builderdocuments.models.interfaces.ILoginInfoService;
+import com.builder.documents.builderdocuments.models.interfaces.IDocumentsService;
 import com.builder.documents.builderdocuments.models.repositories.DocumentsRepository;
-import com.builder.documents.builderdocuments.models.repositories.LoginInfoRepository;
 
 @Controller
 @RequestMapping("/documents")
 public class DocumentsController {
     @Autowired
     DocumentsRepository documents;
+    @Autowired
+    IDocumentsService documentsService;
 
     @RequestMapping(method = RequestMethod.GET)
-    public String usersGet(ModelMap model, @RequestParam("page") Optional<String> page) {
+    public String documentsGet(ModelMap model, @RequestParam("page") Optional<String> page) {//TODO Recheck the code
       try {
         int currentPage;
         if(page.isPresent())
@@ -41,4 +42,19 @@ public class DocumentsController {
         return "redirect:/documents";
       }
    }
+
+   @RequestMapping(consumes={"multipart/*"}, method = RequestMethod.POST)
+   public String documentsPost(DocumentEntity info, ModelMap model, @RequestParam("secretKey") String secretKey, @RequestParam("document") MultipartFile document) {
+        String errorMessage = null;
+        String successMessage = null;
+        errorMessage = documentsService.addDocument(info, document, secretKey);
+        if(errorMessage == null)
+        {
+          model.addAttribute("success", successMessage);
+          return "redirect:/document?item=" + info.getIdDocument();
+        }
+        else
+            model.addAttribute("error", errorMessage);
+        return documentsGet(model, Optional.of("1"));
+    }
 }

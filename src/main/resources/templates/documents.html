@@ -89,7 +89,7 @@
    <div id="addDocumentFormContainer" class="form-hidden-container flex-center-block hidden">
       <div class="flex-column-center form-450 gradient-fill-blue form-container margin-all-20">
          <h2>Загрузить документ</h2>
-         <form th:action="@{/documents}" method="post" class="form-border">
+         <form th:action="@{/documents}" method="post" class="form-border" enctype="multipart/form-data">
             <div class="form-field margin-top-20">
                <label class="form-label" for="addName"> Название: 
                </label>

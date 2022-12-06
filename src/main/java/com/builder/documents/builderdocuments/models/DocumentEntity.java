@@ -21,6 +21,10 @@ public class DocumentEntity implements Serializable {
     private StaffEntity creator;
 
     @ManyToOne
+    @JoinColumn(name = "assignee", referencedColumnName = "idstaff")
+    private StaffEntity assignee;
+
+    @ManyToOne
     @JoinColumn(name = "template", referencedColumnName = "iddocumenttemplates")
     private DocumentTemplateEntity template;
 
@@ -42,10 +46,11 @@ public class DocumentEntity implements Serializable {
 
     public DocumentEntity() {}
 
-    public DocumentEntity(long idDocument, String name, StaffEntity creator, DocumentTemplateEntity template, Date dateCreated, Date dateModified, String description, String hash, String path) {
+    public DocumentEntity(long idDocument, String name, StaffEntity creator, StaffEntity assignee, DocumentTemplateEntity template, Date dateCreated, Date dateModified, String description, String hash, String path) {
         this.idDocument = idDocument;
         this.name = name;
         this.creator = creator;
+        this.assignee = assignee;
         this.template = template;
         this.dateCreated = dateCreated;
         this.dateModified = dateModified;
@@ -124,5 +129,13 @@ public class DocumentEntity implements Serializable {
 
     public void setPath(String path) {
         this.path = path;
+    }
+
+    public StaffEntity getAssignee() {
+        return assignee;
+    }
+
+    public void setAssignee(StaffEntity assignee) {
+        this.assignee = assignee;
     }
 }

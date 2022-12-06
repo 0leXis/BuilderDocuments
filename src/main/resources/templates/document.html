@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+   xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+<head>
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Document</title>
+   <link href="../static/style.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+   <header>
+      <div class="padding-10 flex-center-block gradient-fill-blue">
+         <img src="../static/BDocsLogo.png" th:src="@{static/BDocsLogo.png}" alt="Builder's Documents" width="150"
+            height="57" />
+      </div>
+      <div class="flex-space-between nav-container">
+         <div class="nav-block-submit"></div>
+         <nav class="flex-center-block">
+            <a class="nav-block flex-center-block" href="/documents.html">Документы</a>
+            <a class="nav-block flex-center-block" href="/staff.html">Сотрудники</a>
+            <h1 class="nav-block-current flex-center-block" href="/users.html">Пользователи</h1>
+         </nav>
+         <form th:action="@{/logout}" method="post">
+            <input class="nav-block-submit" type="submit" value="Выход" />
+         </form>
+      </div>
+   </header>
+   <div class="flex-center">
+      <div class="form-full-size gradient-fill-blue form-container margin-all-20">
+         <div class="flex-space-between">
+            <div>
+               <h1 class="bold font-size-20" th:text="${document.name}">Название</h1>
+               <div class="flex-start margin-top-10">
+                  <div class="bold">Создатель:</div>
+                  <div class="margin-left-10" th:text="${document.creator.name}+' '+${document.creator.lastname}">Флекс Флекс</div>
+               </div>
+               <div class="flex-start margin-top-10">
+                  <div class="bold">Создан:</div>
+                  <div class="margin-left-10" th:text="${document.dateCreated}">11.11.2011</div>
+               </div>
+               <div class="flex-start margin-top-10">
+                  <div class="bold">Изменен:</div>
+                  <div class="margin-left-10" th:text="${document.dateModified}">11.11.2011</div>
+               </div>
+               <div class="flex-start margin-top-10">
+                  <div class="bold">ЭЦП:</div>
+                  <div class="margin-left-10" th:text="${document.hash}">dsdfsdgdsgfgfdgd</div>
+               </div>
+               <div class="flex-start margin-top-10">
+                  <div class="bold">Шаблон XSLT:</div>
+                  <div class="margin-left-10" th:if="${document.template}" th:text="${document.template.name}">Template1</div>
+                  <div class="margin-left-10" th:unless="${document.template}">Нет</div>
+               </div>
+               <p class="margin-all-20" th:text="${document.description}">Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum repudiandae, harum, repellendus reiciendis voluptates quidem maxime facilis eos eaque optio assumenda architecto dolores asperiores ducimus veniam laboriosam, tenetur voluptatum iste?</p>
+               <div>
+                  <a class="margin-left-10 href-button" th:href="@{/document/download(item=${document.idDocument})}">Загрузить</a>
+                  <a class="margin-left-10 href-button" th:href="@{/documentEdit(item=${document.idDocument})}" href="documentEdit">Редактировать</a>
+                  <button type="button" class="margin-left-10">Добавить новую версию</button>
+                  <button type="button" class="margin-left-10" th:onclick="'deleteDocument('+${document.idDocument}+')'">Удалить</button><!--TODO comments-->
+               </div>
+            </div>
+            <div class="margin-all-20 width-300">
+               <div class="bold margin-bottom-10">Исполнитель:</div>
+               <div>
+                  <span th:if="${document.assignee}" th:text="${document.assignee.name}+' '+${document.assignee.lastname}">Иван Иванов</span><!--TODO profile link-->
+                  <span th:unless="${document.assignee}">Не назначен</span>
+               </div>
+               <div class="bold margin-top-10 margin-bottom-10">Согласовано:</div>
+               <div th:if="${#lists.isEmpty(approvers)}">⚠️ Внимание! Добавьте сотрудника для согласования.</div>
+               <div class="margin-top-10 flex-start" th:each="approver : ${approvers}">
+                  <span th:if="${approver.approved}">✅</span>
+                  <span class="margin-left-10" th:text="${approver.staff.name}+' '+${approver.staff.lastname}">Olexis Olexis</span>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+   <div id="deleteDocumentFormContainer" class="form-hidden-container flex-center-block hidden">
+      <div class="flex-column-center gradient-fill-blue form-container margin-all-20">
+         <form th:action="@{/document}" method="post" class="form-border">
+            <div>Документ будет удален. Вы уверены?</div>
+            <input type="hidden" value="delete" name="mode"/>
+            <input type="hidden" value="0" name="idDocument" id="deleteIdDocumentField"/>
+            <div class="flex-center">
+               <div class="form-field">
+                  <input type="submit" value="Да" />
+               </div>
+               <div class="form-field">
+                  <button type="button" onclick="cancelDeleteDocument()">Отмена</button>
+               </div>
+            </div>
+         </form>
+      </div>
+   </div>
+
+   <script src="../static/scripts/formUtilities.js"></script>
+   <script src="../static/scripts/document.js"></script>
+</body>
+</html>

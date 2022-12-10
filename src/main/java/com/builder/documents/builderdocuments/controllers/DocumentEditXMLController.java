@@ -86,10 +86,17 @@ public class DocumentEditXMLController {
    }
 
    @RequestMapping(method = RequestMethod.POST)
-   public String documentsPost(DocumentEntity info, ModelMap model, @RequestParam("secretKey") String secretKey, @RequestParam("documentText") String documentText) {
+   public String documentsPost(DocumentEntity info, ModelMap model, @RequestParam("mode") String mode, @RequestParam("secretKey") String secretKey, @RequestParam("documentText") String documentText) {
         String errorMessage = null;
         String successMessage = null;
-        errorMessage = documentsService.addDocument(info, documentText, secretKey);
+        switch(mode){
+            case "upload":
+              errorMessage = documentsService.addDocument(info, documentText, secretKey);
+              break;
+            case "uploadNew":
+              errorMessage = documentsService.editDocument(info, documentText, secretKey);
+              break;
+          }
         if(errorMessage == null)
         {
           model.addAttribute("success", successMessage);

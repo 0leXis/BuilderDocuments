@@ -7,3 +7,13 @@ function deleteDocument(id){
 function cancelDeleteDocument(){
     hideFormDialog("deleteDocumentFormContainer");
 }
+
+function uploadNew(id){
+    setValueFromValue("uploadNewIdDocumentField", id);
+
+    showFormDialog("uploadNewDocumentFormContainer");
+}
+
+function cancelUploadNew(){
+    hideFormDialog("uploadNewDocumentFormContainer");
+}

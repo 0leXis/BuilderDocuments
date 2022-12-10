@@ -46,6 +46,7 @@ import com.builder.documents.builderdocuments.models.repositories.LoginInfoRepos
 import com.builder.documents.builderdocuments.models.repositories.StaffRepository;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.xerces.impl.dv.util.Base64;
+import org.hibernate.sql.Template;
 
 @Service
 public class DocumentsService implements IDocumentsService {
@@ -63,7 +64,6 @@ public class DocumentsService implements IDocumentsService {
     DocumentApproversRepository approversRepo;
 
     public String addDocument(DocumentEntity info, IDocumentSaver saver, String secretKey) {
-        //TODO Template check
         //TODO Localization
         if(info.getName().length() < 1)
             return "Enter name";
@@ -116,6 +116,62 @@ public class DocumentsService implements IDocumentsService {
         return null;
     }
 
+    public String editDocument(DocumentEntity infoTmp, IDocumentSaver saver, String secretKey){
+        Optional<DocumentEntity> document = documentsRepo.findById(infoTmp.getIdDocument());
+        if(!document.isPresent())
+            return "Document not found";
+        
+        String validationError = saver.Validate();
+        if(validationError != null)
+            return "Error uploading document";
+        
+        document.get().setDateModified(new Date());
+        document.get().setTemplate(infoTmp.getTemplate());
+
+        String documentTempFile;
+        try{
+            documentTempFile = saver.Save(documentsPath);
+        }
+        catch(IOException e){
+            return "Error uploading document";
+        }
+
+        infoTmp.setPath(documentTempFile);
+
+        try{
+            setDocumentHash(infoTmp, secretKey);
+            if(compareHashes(infoTmp, document.get().getCreator().getOpenKey())){
+                try{
+                    Files.deleteIfExists(Paths.get(infoTmp.getPath()));
+                    //TODO WHY EXCEPTOION??????
+                }
+                catch (Exception e) {}
+                return "Invalid sign";
+            }
+        }
+        catch(Exception e){
+            try{
+                Files.deleteIfExists(Paths.get(infoTmp.getPath()));
+                //TODO WHY EXCEPTOION??????
+            }
+            catch (Exception ex) {}
+            return "Error comparing hashes";
+        }
+
+        try{
+            Files.deleteIfExists(Paths.get(document.get().getPath()));
+            //TODO WHY EXCEPTOION??????
+            //REFACTOR THIS FOR THE GODS SAKE
+        }
+        catch (Exception ex) {}
+        
+        document.get().setPath(infoTmp.getPath());
+        document.get().setHash(infoTmp.getHash());
+
+        documentsRepo.save(document.get());
+        return null;
+    }
+
     @Override
     public String addDocument(DocumentEntity info, MultipartFile file, String secretKey)
     {
@@ -136,8 +192,16 @@ public class DocumentsService implements IDocumentsService {
 
     @Override
     public String editDocument(DocumentEntity info, MultipartFile file, String secretKey) {
-        info.setDateModified(new Date());
-        return null;
+        return editDocument(info, new MultipartDocumentSaver(file), secretKey);
+    }
+
+    @Override
+    public String editDocument(DocumentEntity info, String documentText, String secretKey){
+        DocumentTemplateEntity template = info.getTemplate();
+        if(template == null)
+            return editDocument(info, new StringDocumentSaver(documentText, null, xmlService), secretKey);
+        else
+            return editDocument(info, new StringDocumentSaver(documentText, new File(template.getPath()), xmlService), secretKey);
     }
 
     @Override

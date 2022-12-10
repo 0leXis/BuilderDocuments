@@ -44,10 +44,17 @@ public class DocumentsController {
    }
 
    @RequestMapping(consumes={"multipart/*"}, method = RequestMethod.POST)
-   public String documentsPost(DocumentEntity info, ModelMap model, @RequestParam("secretKey") String secretKey, @RequestParam("document") MultipartFile document) {
+   public String documentsPost(DocumentEntity info, ModelMap model, @RequestParam("mode") String mode, @RequestParam("secretKey") String secretKey, @RequestParam("document") MultipartFile document) {
         String errorMessage = null;
-        String successMessage = null;
-        errorMessage = documentsService.addDocument(info, document, secretKey);
+        String successMessage = "Document uploaded";
+        switch(mode){
+          case "upload":
+            errorMessage = documentsService.addDocument(info, document, secretKey);
+            break;
+          case "uploadNew":
+            errorMessage = documentsService.editDocument(info, document, secretKey);
+            break;
+        }
         if(errorMessage == null)
         {
           model.addAttribute("success", successMessage);

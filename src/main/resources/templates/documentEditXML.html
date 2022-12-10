@@ -33,8 +33,8 @@
          <div class="flex-center margin-bottom-20">Создание документа</div>
          <form class="form-full-size full-width" th:action="@{/documentEditXML}" method="post">
             <input type="hidden" name="idDocument" th:if="${document.idDocument}" th:value="${document.idDocument}"/>
-            <input type="hidden" name="mode" th:if="${document.idDocument}" value="edit"/>
-            <input type="hidden" name="mode" th:unless="${document.idDocument}" value="add"/>
+            <input type="hidden" name="mode" th:if="${document.idDocument}" value="uploadNew"/>
+            <input type="hidden" name="mode" th:unless="${document.idDocument}" value="upload"/>
             <div class="flex-start margin-top-10">
                <div class="bold">Название:</div>
                <div class="bold font-size-20" th:if="${document.name}" th:text="${document.name}">Документ 1</div>

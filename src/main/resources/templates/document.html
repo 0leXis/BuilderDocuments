@@ -59,7 +59,7 @@
                   <a class="margin-left-10 href-button" th:href="@{/document/download(item=${document.idDocument})}">Загрузить</a>
                   <a class="margin-left-10 href-button" th:href="@{/documentEdit(item=${document.idDocument})}" href="documentEdit.html">Редактировать</a>
                   <a class="margin-left-10 href-button" th:if="${document.isFormalized}" th:href="@{/documentEditXML(item=${document.idDocument})}" href="documentEditXML.html">Добавить новую версию</a>
-                  <button type="button" class="margin-left-10" th:unless="${document.isFormalized}">Добавить новую версию</button>
+                  <button type="button" class="margin-left-10" th:unless="${document.isFormalized}" th:onclick="'uploadNew('+${document.idDocument}+')'">Добавить новую версию</button>
                   <button type="button" class="margin-left-10" th:onclick="'deleteDocument('+${document.idDocument}+')'">Удалить</button><!--TODO comments-->
                </div>
             </div>
@@ -91,6 +91,33 @@
                </div>
                <div class="form-field">
                   <button type="button" onclick="cancelDeleteDocument()">Отмена</button>
+               </div>
+            </div>
+         </form>
+      </div>
+   </div>
+   <div id="uploadNewDocumentFormContainer" class="form-hidden-container flex-center-block hidden">
+      <div class="flex-column-center form-450 gradient-fill-blue form-container margin-all-20">
+         <h2>Загрузить документ</h2>
+         <form th:action="@{/documents}" method="post" class="form-border" enctype="multipart/form-data">
+            <input type="hidden" value="uploadNew" name="mode"/>
+            <input type="hidden" value="0" name="idDocument" id="uploadNewIdDocumentField"/>
+            <div class="form-field">
+               <label class="form-label" for="uploadSecretKey"> ЭЦП: 
+               </label>
+               <input class="form-input-300" type="password" name="secretKey" id="uploadSecretKey"/> 
+            </div>
+            <div class="form-field">
+               <label class="form-label" for="uploadDocument"> Загрузить документ:
+               </label>
+               <input class="form-input-300" type="file" name="document" id="uploadDocument"/> 
+            </div>
+            <div class="flex-center">
+               <div class="form-field">
+                  <input type="submit" value="Загрузить" />
+               </div>
+               <div class="form-field">
+                  <button type="button" onclick="cancelUploadNew()">Отмена</button>
                </div>
             </div>
          </form>

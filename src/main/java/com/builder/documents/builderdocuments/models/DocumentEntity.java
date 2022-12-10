@@ -44,9 +44,12 @@ public class DocumentEntity implements Serializable {
     @Column(name = "path")
     private String path;
 
+    @Column(name = "isformalized")
+    private boolean isFormalized;
+
     public DocumentEntity() {}
 
-    public DocumentEntity(long idDocument, String name, StaffEntity creator, StaffEntity assignee, DocumentTemplateEntity template, Date dateCreated, Date dateModified, String description, String hash, String path) {
+    public DocumentEntity(long idDocument, String name, StaffEntity creator, StaffEntity assignee, DocumentTemplateEntity template, Date dateCreated, Date dateModified, String description, String hash, String path, boolean isFormalized) {
         this.idDocument = idDocument;
         this.name = name;
         this.creator = creator;
@@ -57,6 +60,7 @@ public class DocumentEntity implements Serializable {
         this.description = description;
         this.hash = hash;
         this.path = path;
+        this.isFormalized = isFormalized;
     }
 
     public long getIdDocument() {
@@ -137,5 +141,13 @@ public class DocumentEntity implements Serializable {
 
     public void setAssignee(StaffEntity assignee) {
         this.assignee = assignee;
+    }
+
+    public boolean isFormalized() {
+        return isFormalized;
+    }
+
+    public void setFormalized(boolean isFormalized) {
+        this.isFormalized = isFormalized;
     }
 }

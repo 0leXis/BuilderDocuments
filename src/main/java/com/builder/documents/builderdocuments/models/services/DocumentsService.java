@@ -72,6 +72,7 @@ public class DocumentsService implements IDocumentsService {
         }
 
         info.setPath(documentFile.getPath());
+        info.setFormalized(false);
 
         documentsRepo.save(info);
         return null;

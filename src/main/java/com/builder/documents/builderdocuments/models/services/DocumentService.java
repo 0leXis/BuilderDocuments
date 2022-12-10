@@ -15,6 +15,7 @@ import com.builder.documents.builderdocuments.models.Role;
 import com.builder.documents.builderdocuments.models.StaffEntity;
 import com.builder.documents.builderdocuments.models.interfaces.IDocumentService;
 import com.builder.documents.builderdocuments.models.interfaces.ILoginInfoService;
+import com.builder.documents.builderdocuments.models.interfaces.IStaffService;
 import com.builder.documents.builderdocuments.models.repositories.DocumentApproversRepository;
 import com.builder.documents.builderdocuments.models.repositories.DocumentsRepository;
 import com.builder.documents.builderdocuments.models.repositories.LoginInfoRepository;
@@ -25,12 +26,12 @@ public class DocumentService implements IDocumentService {
     
     @Autowired
     StaffRepository staffRepo;
-
     @Autowired
     DocumentsRepository documentsRepo;
-
     @Autowired
     DocumentApproversRepository approversRepo;
+    @Autowired
+    IStaffService staffService;
 
     @Override
     public String addApprover(String approverIdStr, String documentIdStr) {
@@ -52,6 +53,9 @@ public class DocumentService implements IDocumentService {
         Optional<DocumentEntity> document = documentsRepo.findById(documentId);
         if(!document.isPresent())
             return "Document not found";
+
+        if(staff.get() == document.get().getCreator())
+            return "Creator can't approve the document";
 
         Optional<DocumentApproverEntity> approver = approversRepo.findByDocumentAndStaff(document.get(), staff.get());
         if(approver.isPresent())
@@ -124,6 +128,25 @@ public class DocumentService implements IDocumentService {
         documentEntity.get().setDescription(document.getDescription());
         documentsRepo.save(documentEntity.get());
 
+        return null;
+    }
+
+    @Override
+    public String approveDocument(DocumentEntity info)
+    {
+        Optional<DocumentEntity> documentEntity = documentsRepo.findById(info.getIdDocument());
+        if(documentEntity == null){
+            return "Document doesn't exists";
+        }
+
+        Optional<DocumentApproverEntity> documentApproverEntity = approversRepo.findByDocumentAndStaff(documentEntity.get(), staffService.getCurrentStaff().get());
+        if(documentApproverEntity == null){
+            return "Approver doesn't exists";
+        }
+
+        documentApproverEntity.get().setApproved(!documentApproverEntity.get().isApproved());
+
+        approversRepo.save(documentApproverEntity.get());
         return null;
     }
 }

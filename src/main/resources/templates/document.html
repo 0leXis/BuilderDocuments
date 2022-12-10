@@ -55,12 +55,17 @@
                   <div class="margin-left-10" th:unless="${document.template}">Нет</div>
                </div>
                <p class="margin-all-20" th:text="${document.description}">Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum repudiandae, harum, repellendus reiciendis voluptates quidem maxime facilis eos eaque optio assumenda architecto dolores asperiores ducimus veniam laboriosam, tenetur voluptatum iste?</p>
-               <div>
+               <div class="flex-start">
+                  <form th:action="@{/documentApprove}" method="post">
+                     <input type="hidden" name="idDocument" th:value="${document.idDocument}"/>
+                     <button type="submit" th:if="${currentApprover} and not ${currentApprover.approved}">Согласовать</button>
+                     <button type="submit" th:if="${currentApprover} and ${currentApprover.approved}">Отмена Согл.</button>
+                  </form>
                   <a class="margin-left-10 href-button" th:href="@{/document/download(item=${document.idDocument})}">Загрузить</a>
                   <a class="margin-left-10 href-button" th:href="@{/documentEdit(item=${document.idDocument})}" href="documentEdit.html">Редактировать</a>
                   <a class="margin-left-10 href-button" th:if="${document.isFormalized}" th:href="@{/documentEditXML(item=${document.idDocument})}" href="documentEditXML.html">Добавить новую версию</a>
                   <button type="button" class="margin-left-10" th:unless="${document.isFormalized}" th:onclick="'uploadNew('+${document.idDocument}+')'">Добавить новую версию</button>
-                  <button type="button" class="margin-left-10" th:onclick="'deleteDocument('+${document.idDocument}+')'">Удалить</button><!--TODO comments-->
+                  <button type="button" class="margin-left-10" th:onclick="'deleteDocument('+${document.idDocument}+')'">Удалить</button>
                </div>
             </div>
             <div class="margin-all-20 width-300">

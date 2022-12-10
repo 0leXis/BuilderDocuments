@@ -7,4 +7,5 @@ public interface IDocumentService {
     String deleteApprover(String approverIdStr);
     String editDocument(DocumentEntity document);
     String changeAssignee(String assigneeIdStr, String documentIdStr);
+    public String approveDocument(DocumentEntity info);
 }

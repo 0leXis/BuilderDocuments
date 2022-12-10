@@ -47,7 +47,7 @@ public class DocumentEditController {
         List<DocumentApproverEntity> approvers = approversRepo.findByDocument(document.get());
 
         List<StaffEntity> staff = staffRepo.findAll();
-        List<StaffEntity> approversStaff = staffRepo.findPotentialApprovers(document.get());
+        List<StaffEntity> approversStaff = staffRepo.findPotentialApprovers(document.get(), document.get().getCreator());
 
         model.put("document", document.get());
         model.put("approvers", approvers);

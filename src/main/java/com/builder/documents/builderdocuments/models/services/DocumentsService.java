@@ -31,6 +31,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.builder.documents.builderdocuments.models.DocumentApproverEntity;
 import com.builder.documents.builderdocuments.models.DocumentEntity;
 import com.builder.documents.builderdocuments.models.DocumentTemplateEntity;
 import com.builder.documents.builderdocuments.models.StaffEntity;
@@ -249,7 +250,6 @@ public class DocumentsService implements IDocumentsService {
         byte[] fileBytes = Files.readAllBytes(Paths.get(info.getPath()));
         MessageDigest digest = MessageDigest.getInstance("SHA-256");
         byte[] hash = digest.digest(fileBytes);
-
 
         byte[] decoded = Base64.decode(info.getHash());
         decoded = Arrays.copyOf(decoded, 245);

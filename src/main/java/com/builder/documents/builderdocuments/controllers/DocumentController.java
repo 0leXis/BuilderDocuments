@@ -25,6 +25,7 @@ import com.builder.documents.builderdocuments.models.DocumentEntity;
 import com.builder.documents.builderdocuments.models.StaffEntity;
 import com.builder.documents.builderdocuments.models.interfaces.IDocumentService;
 import com.builder.documents.builderdocuments.models.interfaces.IDocumentsService;
+import com.builder.documents.builderdocuments.models.interfaces.IStaffService;
 import com.builder.documents.builderdocuments.models.repositories.DocumentApproversRepository;
 import com.builder.documents.builderdocuments.models.repositories.DocumentsRepository;
 import com.builder.documents.builderdocuments.models.repositories.StaffRepository;
@@ -42,10 +43,12 @@ public class DocumentController {
     @Autowired
     IDocumentsService documentsService;
     @Autowired
+    IStaffService staffService;
+    @Autowired
     ResourceLoader resourceLoader;
 
     @RequestMapping(value = "/document", method = RequestMethod.GET)
-    public String documentsGet(ModelMap model, @RequestParam("item") String item) {
+    public String documentGet(ModelMap model, @RequestParam("item") String item) {
       try {
         long intItem;
         intItem = Long.parseLong(item);
@@ -57,9 +60,18 @@ public class DocumentController {
 
         List<DocumentApproverEntity> approvers = approversRepo.findByDocument(document.get());
 
+        DocumentApproverEntity currentApprover = null;
+        StaffEntity currentStaff = staffService.getCurrentStaff().get();
+        for (DocumentApproverEntity documentApproverEntity : approvers) {
+          if(documentApproverEntity.getStaff() == currentStaff){
+            currentApprover = documentApproverEntity;
+            break;
+          }
+        }
+
         model.put("document", document.get());
         model.put("approvers", approvers);
-      
+        model.put("currentApprover", currentApprover);
         return "document";
       }
       catch (NumberFormatException e) {
@@ -88,7 +100,7 @@ public class DocumentController {
   }
 
    @RequestMapping(value = "/document", method = RequestMethod.POST)
-   public String staffPost(DocumentEntity data, ModelMap model, @RequestParam("mode") String mode) {
+   public String documentPost(DocumentEntity data, ModelMap model, @RequestParam("mode") String mode) {
      String errorMessage = null;
      String successMessage = null;
      switch(mode)
@@ -105,4 +117,19 @@ public class DocumentController {
 
      return "redirect:/documents";
     }
+
+    @RequestMapping(value = "/documentApprove", method = RequestMethod.POST)
+    public String documentApprovePost(DocumentEntity data, ModelMap model) {
+      String errorMessage = null;
+      String successMessage = "Approved";
+
+      errorMessage = documentService.approveDocument(data);
+
+      if(errorMessage == null)
+          model.addAttribute("success", successMessage);
+      else
+          model.addAttribute("error", errorMessage);
+ 
+      return "redirect:/document?item=" + data.getIdDocument();
+     }
 }

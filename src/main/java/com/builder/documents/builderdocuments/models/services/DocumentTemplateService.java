@@ -7,10 +7,29 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
+import javax.xml.namespace.QName;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.stream.StreamResult;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
+import jlibs.xml.sax.XMLDocument;
+import jlibs.xml.xsd.XSInstance;
+import jlibs.xml.xsd.XSParser;
+import javax.xml.namespace.QName;
+import javax.xml.validation.Validator;
+
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.StringWriter;
 
 import org.apache.commons.io.FilenameUtils;
+import org.apache.xerces.xs.XSModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.xml.sax.SAXException;
@@ -137,4 +156,67 @@ public class DocumentTemplateService implements IDocumentTemplateService {
         return null;
     }
     
+    @Override
+    public String generateTemplatedDocument(DocumentTemplateEntity info, AtomicReference<String> result)
+    {
+        try{
+            Document doc = loadXsdDocument(info.getPath());
+
+            Element rootElem = doc.getDocumentElement();
+            String targetName = null;
+            String targetNamespace = null;
+            if (rootElem != null && rootElem.getNodeName().equals("xs:schema")) 
+            {
+                targetNamespace = rootElem.getAttribute("targetNamespace");
+                targetName = rootElem.getElementsByTagName("xs:element").item(0).getAttributes().getNamedItem("name").getTextContent();
+            }
+            else
+                return "No root element found";
+
+            XSModel xsModel = new XSParser().parse(info.getPath());
+
+            XSInstance instance = new XSInstance();
+            instance.minimumElementsGenerated = 1;
+            instance.maximumElementsGenerated = 1;
+            instance.generateDefaultAttributes = true;
+            instance.generateOptionalAttributes = true;
+            instance.maximumRecursionDepth = 0;
+            instance.generateAllChoices = true;
+            instance.showContentModel = true;
+            instance.generateOptionalElements = true;
+
+            StringWriter outWriter = new StringWriter();
+            StreamResult resultStream = new StreamResult(outWriter);
+            QName rootElement = new QName(targetNamespace, targetName);
+            XMLDocument sampleXml = new XMLDocument(resultStream, true, 4, StandardCharsets.UTF_8.name());
+            instance.generate(xsModel, rootElement, sampleXml);
+
+            result.set(outWriter.getBuffer().toString());
+            outWriter.close();
+        }
+        catch(SAXException e){
+            return "Error parsing xsd: " + e.getMessage();
+        }
+        catch(Exception e){
+            return "Unable to load xsd: " + e.getMessage();
+        }
+
+        return null;
+    }
+
+    private static Document loadXsdDocument(String inputName) throws ParserConfigurationException, IOException, SAXException{
+        String filename = inputName;
+
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        factory.setValidating(false);
+        factory.setIgnoringElementContentWhitespace(true);
+        factory.setIgnoringComments(true);
+        Document doc = null;
+
+        DocumentBuilder builder = factory.newDocumentBuilder();
+        File inputFile = new File(filename);
+        doc = builder.parse(inputFile);
+
+        return doc;
+    }
 }

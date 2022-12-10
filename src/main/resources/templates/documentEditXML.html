@@ -31,22 +31,34 @@
    <div class="flex-center">
       <div class="flex-column-center form-full-size gradient-fill-blue form-container margin-all-20">
          <div class="flex-center margin-bottom-20">Создание документа</div>
-         <form class="form-full-size full-width" th:action="@{/templateEdit}" method="post">
-            <input type="hidden" name="idDocumentTemplates" th:if="${template.idDocumentTemplates}" th:value="${template.idDocumentTemplates}"/>
-            <input type="hidden" name="mode" th:if="${template.idDocumentTemplates}" value="edit"/>
-            <input type="hidden" name="mode" th:unless="${template.idDocumentTemplates}" value="add"/>
+         <form class="form-full-size full-width" th:action="@{/documentEditXML}" method="post">
+            <input type="hidden" name="idDocument" th:if="${document.idDocument}" th:value="${document.idDocument}"/>
+            <input type="hidden" name="mode" th:if="${document.idDocument}" value="edit"/>
+            <input type="hidden" name="mode" th:unless="${document.idDocument}" value="add"/>
             <div class="flex-start margin-top-10">
                <div class="bold">Название:</div>
-               <input name="name" type="text" class="bold font-size-20" th:value="${template.name}" value="Название"/>
+               <div class="bold font-size-20" th:if="${document.name}" th:text="${document.name}">Документ 1</div>
+               <input name="name" type="text" class="bold font-size-20" th:unless="${document.name}" value="Название"/>
             </div>
-            <div class="bold flex-start margin-top-10">Код шаблона:</div>
             <div class="flex-start margin-top-10">
-               <textarea id="templateTextElement" name="templateText" class="full-width xml-editor" th:text="${templateText}">Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum repudiandae, harum, repellendus reiciendis voluptates quidem maxime facilis eos eaque optio assumenda architecto dolores asperiores ducimus veniam laboriosam, tenetur voluptatum iste?</textarea>
+                <div class="bold">Шаблон:</div>
+                <select id="selectTemplateElement" name="template" class="bold">
+                    <option value="0">Без шаблона</option>
+                    <option th:each="template : ${templates}" th:text="${template.name}" th:value="${template.idDocumentTemplates}">Шаблон 1</option>
+                </select>
+            </div>
+            <div class="flex-start margin-top-10">
+               <div class="bold">ЭЦП: </div>
+               <input class="bold" type="password" name="secretKey" id="addSecretKey"/> 
+            </div>
+            <div class="bold flex-start margin-top-10">Код документа:</div>
+            <div class="flex-start margin-top-10">
+               <textarea id="documentTextElement" name="documentText" class="full-width xml-editor" th:text="${documentText}">Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum repudiandae, harum, repellendus reiciendis voluptates quidem maxime facilis eos eaque optio assumenda architecto dolores asperiores ducimus veniam laboriosam, tenetur voluptatum iste?</textarea>
             </div>
             <div class="flex-start margin-top-10">
                <button type="submit">Сохранить</button>
                <button type="button" class="margin-left-10" onclick="loadFromFile()">Загрузить из файла</button>
-               <a class="margin-left-10 href-button" th:href="@{/documentTemplates}" href="documentTemplates.html">Отмена</a>
+               <a class="margin-left-10 href-button" th:href="@{/documents}" href="documents.html">Отмена</a>
             </div><!--TODO error messages, xml highlight, textarea style-->
          </form>
       </div>
@@ -55,6 +67,6 @@
    <input id="textFileElement" type="file" class="hidden"/>
 
    <script src="../static/scripts/formUtilities.js"></script>
-   <script src="../static/scripts/templateEdit.js"></script>
+   <script src="../static/scripts/documentEditXML.js"></script>
 </body>
 </html>

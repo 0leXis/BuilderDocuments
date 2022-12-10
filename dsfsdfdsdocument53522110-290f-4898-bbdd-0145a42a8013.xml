@@ -1,0 +1,7 @@
+<individual xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <name>name1</name>
+    <address>
+        <zip>876659027056429056</zip>
+        <city>city1</city>
+    </address>
+</individual>

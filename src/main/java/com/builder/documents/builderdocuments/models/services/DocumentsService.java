@@ -15,8 +15,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.builder.documents.builderdocuments.models.DocumentEntity;
+import com.builder.documents.builderdocuments.models.DocumentTemplateEntity;
 import com.builder.documents.builderdocuments.models.StaffEntity;
+import com.builder.documents.builderdocuments.models.documentSavers.MultipartDocumentSaver;
+import com.builder.documents.builderdocuments.models.documentSavers.StringDocumentSaver;
+import com.builder.documents.builderdocuments.models.interfaces.IDocumentSaver;
 import com.builder.documents.builderdocuments.models.interfaces.IDocumentsService;
+import com.builder.documents.builderdocuments.models.interfaces.IXMLValidationService;
 import com.builder.documents.builderdocuments.models.repositories.DocumentApproversRepository;
 import com.builder.documents.builderdocuments.models.repositories.DocumentsRepository;
 import com.builder.documents.builderdocuments.models.repositories.LoginInfoRepository;
@@ -28,6 +33,8 @@ public class DocumentsService implements IDocumentsService {
     public static String documentsPath = "E:\\Java\\BuilderDocuments\\builderdocuments\\src\\main\\resources\\storage\\"; //TODO To config
 
     @Autowired
+    IXMLValidationService xmlService;
+    @Autowired
     StaffRepository usersRepo;
     @Autowired
     LoginInfoRepository loginRepo;
@@ -36,13 +43,16 @@ public class DocumentsService implements IDocumentsService {
     @Autowired
     DocumentApproversRepository approversRepo;
 
-    @Override
-    public String addDocument(DocumentEntity info, MultipartFile file, String secretKey) {
+    public String addDocument(DocumentEntity info, IDocumentSaver saver, String secretKey) {
         //TODO Template check
         //TODO Localization
-        if(info.getName().length() < 1 || info.getDescription().length() < 1)
-            return "Enter name and description";
-        if(file == null)
+        if(info.getName().length() < 1)
+            return "Enter name";
+        if(info.getDescription() == null)
+            info.setDescription("Нет описания");
+
+        String validationError = saver.Validate();
+        if(validationError != null)
             return "Error uploading document";
 
         info.setDateCreated(new Date());
@@ -57,25 +67,36 @@ public class DocumentsService implements IDocumentsService {
         //TODO secret key check
         info.setHash(secretKey);
 
-        String fileExt = FilenameUtils.getExtension(file.getOriginalFilename());
-        File documentFile;
-        do{
-            documentFile = new File(documentsPath + "document" + UUID.randomUUID() + "." + fileExt);
-        }
-        while(documentFile.isFile());
-
+        String documentFile;
         try{
-            file.transferTo(documentFile);
+            documentFile = saver.Save(secretKey);
         }
         catch(IOException e){
             return "Error uploading document";
         }
 
-        info.setPath(documentFile.getPath());
-        info.setFormalized(false);
+        info.setPath(documentFile);
 
         documentsRepo.save(info);
         return null;
+    }
+
+    @Override
+    public String addDocument(DocumentEntity info, MultipartFile file, String secretKey)
+    {
+        info.setFormalized(false);
+        return addDocument(info, new MultipartDocumentSaver(file), secretKey);
+    }
+
+    @Override
+    public String addDocument(DocumentEntity info, String documentText, String secretKey)
+    {
+        info.setFormalized(true);
+        DocumentTemplateEntity template = info.getTemplate();
+        if(template == null)
+            return addDocument(info, new StringDocumentSaver(documentText, null, xmlService), secretKey);
+        else
+            return addDocument(info, new StringDocumentSaver(documentText, new File(template.getPath()), xmlService), secretKey);
     }
 
     @Override

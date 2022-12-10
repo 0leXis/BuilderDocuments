@@ -3,7 +3,7 @@ let templateTextElement = document.getElementById("templateTextElement");
 let textFileElement = document.getElementById("textFileElement");
 
 reader.addEventListener("load", () => {
-    templateTextElement.innerText = reader.result;
+    templateTextElement.value = reader.result;
   }, false);
 
 textFileElement.addEventListener("change", function () {

@@ -42,7 +42,7 @@
             </div>
             <div class="flex-start margin-top-10">
                 <div class="bold">Шаблон:</div>
-                <select id="selectTemplateElement" name="template" class="bold">
+                <select id="selectTemplateElement" class="bold" th:field="*{document.template}">
                     <option value="0">Без шаблона</option>
                     <option th:each="template : ${templates}" th:text="${template.name}" th:value="${template.idDocumentTemplates}">Шаблон 1</option>
                 </select>

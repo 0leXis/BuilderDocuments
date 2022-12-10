@@ -30,15 +30,19 @@ public class StaffEntity implements Serializable {
     @JoinColumn(name = "logininfo", referencedColumnName = "idlogininfo")
     private LoginInfoEntity loginInfo;
 
+    @Column(name = "openkey")
+    private String openKey;
+
     public StaffEntity() {}
 
-    public StaffEntity(long idStaff, String name, String lastname, PositionEntity position, BigDecimal salary, LoginInfoEntity loginInfo) {
+    public StaffEntity(long idStaff, String name, String lastname, PositionEntity position, BigDecimal salary, LoginInfoEntity loginInfo, String openKey) {
         this.idStaff = idStaff;
         this.name = name;
         this.lastname = lastname;
         this.position = position;
         this.salary = salary;
         this.loginInfo = loginInfo;
+        this.openKey = openKey;
     }
 
     public long getIdStaff() {
@@ -87,5 +91,13 @@ public class StaffEntity implements Serializable {
 
     public void setLoginInfo(LoginInfoEntity loginInfo) {
         this.loginInfo = loginInfo;
+    }
+
+    public String getOpenKey() {
+        return openKey;
+    }
+
+    public void setOpenKey(String openKey) {
+        this.openKey = openKey;
     }
 }

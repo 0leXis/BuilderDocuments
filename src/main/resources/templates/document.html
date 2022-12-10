@@ -47,7 +47,7 @@
                </div>
                <div class="flex-start margin-top-10">
                   <div class="bold">ЭЦП:</div>
-                  <div class="margin-left-10" th:text="${document.hash}">dsdfsdgdsgfgfdgd</div>
+                  <div class="margin-left-10 wrap-any" th:text="${document.hash}">dsdfsdgdsgfgfdgd</div>
                </div>
                <div class="flex-start margin-top-10">
                   <div class="bold">Шаблон XSD:</div>
@@ -58,7 +58,8 @@
                <div>
                   <a class="margin-left-10 href-button" th:href="@{/document/download(item=${document.idDocument})}">Загрузить</a>
                   <a class="margin-left-10 href-button" th:href="@{/documentEdit(item=${document.idDocument})}" href="documentEdit.html">Редактировать</a>
-                  <button type="button" class="margin-left-10">Добавить новую версию</button>
+                  <a class="margin-left-10 href-button" th:if="${document.isFormalized}" th:href="@{/documentEditXML(item=${document.idDocument})}" href="documentEditXML.html">Добавить новую версию</a>
+                  <button type="button" class="margin-left-10" th:unless="${document.isFormalized}">Добавить новую версию</button>
                   <button type="button" class="margin-left-10" th:onclick="'deleteDocument('+${document.idDocument}+')'">Удалить</button><!--TODO comments-->
                </div>
             </div>

@@ -1,9 +1,16 @@
 package com.builder.documents.builderdocuments.models.services;
 
 import java.math.BigDecimal;
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
+import java.security.NoSuchAlgorithmException;
+import java.util.Base64;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
 import com.builder.documents.builderdocuments.models.StaffEntity;
@@ -18,6 +25,14 @@ public class StaffService implements IStaffService {
     StaffRepository staffRepo;
     @Autowired
     LoginInfoRepository loginRepo;
+
+    @Override
+    public Optional<StaffEntity> getCurrentStaff(){
+        User currentUser = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Optional<StaffEntity> currentStaff = staffRepo.findByLoginInfo(loginRepo.findByLogin(currentUser.getUsername()));
+        
+        return currentStaff;
+    }
 
     @Override
     public String addStaff(StaffEntity staff) {
@@ -64,4 +79,30 @@ public class StaffService implements IStaffService {
         return null;
     }
     
+    @Override
+    public String generateKeyValuePair(StaffEntity staff, AtomicReference<String> privateKey)
+    {
+        if(staff.getOpenKey() != null)
+            return "User already generated the key";
+
+        try {
+            KeyPairGenerator generator = KeyPairGenerator.getInstance("RSA");
+            generator.initialize(2048);
+            KeyPair pair = generator.generateKeyPair();
+            staff.setOpenKey(
+                new String(
+                    Base64.getEncoder().encode(
+                        pair.getPublic().getEncoded()
+                        )));
+            privateKey.set(new String(
+                Base64.getEncoder().encode(
+                    pair.getPrivate().getEncoded()
+                    )));
+            staffRepo.save(staff);
+        } catch (NoSuchAlgorithmException e) {
+            return "No RSA generator found";
+        }
+
+        return null;
+    }
 }

@@ -379,3 +379,8 @@ textarea.xml-editor{
     height: 300px;
     resize: none;
 }
+
+.wrap-any{
+    max-width: 900px;
+    overflow-wrap: anywhere;
+}

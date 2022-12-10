@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Document</title>
+   <link href="../static/style.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+   <header>
+      <div class="padding-10 flex-center-block gradient-fill-blue">
+         <img src="../static/BDocsLogo.png" th:src="@{static/BDocsLogo.png}" alt="Builder's Documents" width="150" height="57" />
+      </div>
+      <div class="flex-space-between nav-container">
+         <div class="nav-block-submit"></div>
+         <nav class="flex-center-block">
+            <a class="nav-block flex-center-block" href="/documents.html">Документы</a>
+            <a class="nav-block flex-center-block" href="/staff.html">Сотрудники</a>
+            <a class="nav-block flex-center-block" href="/users.html">Пользователи</a>
+         </nav>
+         <form th:action="@{/logout}" method="post">
+            <input class="nav-block-submit" type="submit" value="Выход"/>
+         </form>
+      </div>
+   </header>
+   <div>
+    <div class="form-full-size gradient-fill-blue form-container margin-all-20">
+        <div class="flex-space-between">
+           <div>
+              <h1 class="bold font-size-20">Профиль</h1>
+              <div class="flex-start margin-top-10">
+                 <div class="bold">Имя:</div>
+                 <div class="margin-left-10" th:text="${staff.name}">Флекс</div>
+              </div>
+              <div class="flex-start margin-top-10">
+                 <div class="bold">Фамилия:</div>
+                 <div class="margin-left-10" th:text="${staff.lastname}">Флекс</div>
+              </div>
+              <div class="flex-start margin-top-10">
+                 <div class="bold">Должность:</div>
+                 <div class="margin-left-10" th:text="${staff.position.name}">1234</div>
+              </div>
+              <div class="flex-start margin-top-10">
+                 <div class="bold">Открытый ключ:</div>
+                 <div class="margin-left-10 wrap-any" th:if="${staff.openKey}" th:text="${staff.openKey}">dsdfsdgdsgfgfdgd</div>
+                 <form th:action="@{/profile}" method="post">
+                    <button type="submit" class="margin-left-10" th:unless="${staff.openKey}">Сгенерировать ключ</button>
+                 </form>
+              </div>
+              <div class="flex-start margin-top-10" th:if="${privateKey}">
+                <div class="bold font-size-20 form-error-field">Внимание! Сохраните данный секретный ключ:</div>
+                <div class="margin-left-10 font-size-20 form-error-field wrap-any" th:text="${privateKey}">dsdfsssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssggggggggggggggggggggggggggggggggggggggggggggggggggggggggggsdgdsgfgfdgd</div>
+              </div>
+           </div>
+        </div>
+     </div>
+   </div>
+</body>
+</html>

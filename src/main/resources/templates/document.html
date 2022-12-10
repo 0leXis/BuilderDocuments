@@ -57,7 +57,7 @@
                <p class="margin-all-20" th:text="${document.description}">Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum repudiandae, harum, repellendus reiciendis voluptates quidem maxime facilis eos eaque optio assumenda architecto dolores asperiores ducimus veniam laboriosam, tenetur voluptatum iste?</p>
                <div>
                   <a class="margin-left-10 href-button" th:href="@{/document/download(item=${document.idDocument})}">Загрузить</a>
-                  <a class="margin-left-10 href-button" th:href="@{/documentEdit(item=${document.idDocument})}" href="documentEdit">Редактировать</a>
+                  <a class="margin-left-10 href-button" th:href="@{/documentEdit(item=${document.idDocument})}" href="documentEdit.html">Редактировать</a>
                   <button type="button" class="margin-left-10">Добавить новую версию</button>
                   <button type="button" class="margin-left-10" th:onclick="'deleteDocument('+${document.idDocument}+')'">Удалить</button><!--TODO comments-->
                </div>

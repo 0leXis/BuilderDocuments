@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
+import com.builder.documents.builderdocuments.config.MvcConfig;
 import com.builder.documents.builderdocuments.models.LoginInfoEntity;
 import com.builder.documents.builderdocuments.models.interfaces.ILoginInfoService;
 import com.builder.documents.builderdocuments.models.repositories.LoginInfoRepository;
@@ -33,7 +34,7 @@ public class UsersController {
             currentPage = Integer.parseInt(page.get());
         else
             currentPage = 1;
-        Page<LoginInfoEntity> users = loginInfos.findAll(PageRequest.of(currentPage - 1, 1));
+        Page<LoginInfoEntity> users = loginInfos.findAll(PageRequest.of(currentPage - 1, MvcConfig.PaginationSize));
         model.put("users", users);
         model.addAttribute("currentPage", currentPage);
         return "users";

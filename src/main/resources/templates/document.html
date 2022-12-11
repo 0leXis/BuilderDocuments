@@ -11,22 +11,7 @@
 </head>
 
 <body>
-   <header>
-      <div class="padding-10 flex-center-block gradient-fill-blue">
-         <img src="../static/BDocsLogo.png" th:src="@{static/BDocsLogo.png}" alt="Builder's Documents" width="150"
-            height="57" />
-      </div>
-      <div class="flex-space-between nav-container">
-         <div class="nav-block-submit"></div>
-         <nav class="flex-center-block">
-            <a class="nav-block flex-center-block" href="/documents.html">Документы</a>
-            <a class="nav-block flex-center-block" href="/staff.html">Сотрудники</a>
-            <h1 class="nav-block-current flex-center-block" href="/users.html">Пользователи</h1>
-         </nav>
-         <form th:action="@{/logout}" method="post">
-            <input class="nav-block-submit" type="submit" value="Выход" />
-         </form>
-      </div>
+   <header th:replace="~{fragments/header::header}">
    </header>
    <div class="flex-center">
       <div class="form-full-size gradient-fill-blue form-container margin-all-20">
@@ -61,10 +46,11 @@
                      <button type="submit" th:if="${currentApprover} and not ${currentApprover.approved}">Согласовать</button>
                      <button type="submit" th:if="${currentApprover} and ${currentApprover.approved}">Отмена Согл.</button>
                   </form>
-                  <a class="margin-left-10 href-button" th:href="@{/document/download(item=${document.idDocument})}">Загрузить</a>
+                  <a id="downloadLinkElement" class="margin-left-10 href-button" th:href="@{/document/download(item=${document.idDocument})}">Загрузить</a>
                   <a class="margin-left-10 href-button" th:href="@{/documentEdit(item=${document.idDocument})}" href="documentEdit.html">Редактировать</a>
                   <a class="margin-left-10 href-button" th:if="${document.isFormalized}" th:href="@{/documentEditXML(item=${document.idDocument})}" href="documentEditXML.html">Добавить новую версию</a>
                   <button type="button" class="margin-left-10" th:unless="${document.isFormalized}" th:onclick="'uploadNew('+${document.idDocument}+')'">Добавить новую версию</button>
+                  <button type="button" class="margin-left-10" th:if="${document.isFormalized}" th:onclick="'printDocument()'">Печать</button>
                   <button type="button" class="margin-left-10" th:onclick="'deleteDocument('+${document.idDocument}+')'">Удалить</button>
                </div>
             </div>

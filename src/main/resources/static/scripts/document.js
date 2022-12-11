@@ -17,3 +17,9 @@ function uploadNew(id){
 function cancelUploadNew(){
     hideFormDialog("uploadNewDocumentFormContainer");
 }
+
+function printDocument(){
+    let downloadLinkElement = document.getElementById("downloadLinkElement");
+    let printWindow = window.open(downloadLinkElement.getAttribute("href"));
+    printWindow.print();
+}

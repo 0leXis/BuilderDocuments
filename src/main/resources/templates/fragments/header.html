@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<body>
+    <header th:fragment="header">
+        <div class="padding-10 flex-center-block gradient-fill-blue">
+           <img src="../static/BDocsLogo.png" th:src="@{static/BDocsLogo.png}" alt="Builder's Documents" width="150"
+              height="57" />
+        </div>
+        <div class="flex-space-between nav-container">
+           <div class="nav-block-submit">
+                <a class="nav-block-mini" th:href="@{/profile}">Профиль</a>
+           </div>
+           <nav class="flex-center-block">
+              <a class="nav-block flex-center-block" th:href="@{/documents}">Документы</a>
+              <a class="nav-block flex-center-block" th:href="@{/documentTemplates}">Шаблоны</a>
+              <a class="nav-block flex-center-block" th:href="@{/staff}">Сотрудники</a>
+              <a class="nav-block flex-center-block" th:href="@{/users}">Пользователи</a>
+           </nav>
+           <form th:action="@{/logout}" method="post">
+              <input class="nav-block-submit" type="submit" value="Выход" />
+           </form>
+        </div>
+     </header>
+</body>
+</html>

@@ -11,22 +11,7 @@
 </head>
 
 <body>
-   <header>
-      <div class="padding-10 flex-center-block gradient-fill-blue">
-         <img src="../static/BDocsLogo.png" th:src="@{static/BDocsLogo.png}" alt="Builder's Documents" width="150"
-            height="57" />
-      </div>
-      <div class="flex-space-between nav-container">
-         <div class="nav-block-submit"></div>
-         <nav class="flex-center-block">
-            <a class="nav-block flex-center-block" href="/documents.html">Документы</a>
-            <a class="nav-block flex-center-block" href="/staff.html">Сотрудники</a>
-            <h1 class="nav-block-current flex-center-block" href="/users.html">Пользователи</h1>
-         </nav>
-         <form th:action="@{/logout}" method="post">
-            <input class="nav-block-submit" type="submit" value="Выход" />
-         </form>
-      </div>
+   <header th:replace="~{fragments/header::header}">
    </header>
    <div class="flex-center">
       <div class="flex-column-center form-full-size gradient-fill-blue form-container margin-all-20">
@@ -56,35 +41,7 @@
                </tr>
             </table>
          </div>
-         <div th:if="${documents.totalPages gt 0}" class="margin-top-20 flex-center">
-            <span>Страница</span>
-            <ul class="flex-center">
-               <li th:classappend="${1 eq currentPage} ? 'current-page'">
-                  <a class="margin-left-10" th:href="@{/documents?page=1}">1</a>
-               </li>
-               <th:block th:switch="${documents.totalPages lt 6}" class="flex-center">
-                  <th:block th:case="true" class="flex-center">
-                     <li th:each="page : ${#numbers.sequence( 2, documents.totalPages - 1, 1)}" th:classappend="${page eq currentPage} ? 'current-page'">
-                        <a class="margin-left-10" th:href="@{/documents?page={page}(page=${page})}" th:text="${page}">2</a>
-                     </li>
-                  </th:block>
-                  <th:block th:case="false" class="flex-center">
-                     <li th:if="${currentPage gt 2}">
-                        <span class="margin-left-10">...</span>
-                     </li>
-                     <li th:each="page : ${#numbers.sequence( currentPage - 1, currentPage + 1, 1)}" th:classappend="${page eq currentPage} ? 'current-page'">
-                        <a class="margin-left-10" th:if="${page gt 1 and page lt documents.totalPages}" th:href="@{/documents?page={page}(page=${page})}" th:text="${page}">3</a>
-                     </li>
-                     <li th:if="${currentPage lt documents.totalPages - 2}">
-                        <span class="margin-left-10">...</span>
-                     </li>
-                  </th:block>
-               </th:block>
-               <li th:if="${documents.totalPages gt 1}" th:classappend="${documents.totalPages eq currentPage} ? 'current-page'">
-                  <a class="margin-left-10" th:href="@{/documents?page={page}(page=${documents.totalPages})}" th:text="${documents.totalPages}">4</a>
-               </li>
-            </ul>
-         </div>
+         <div th:replace="~{fragments/pagination::pagination(${documents}, 'documents')}"></div>
       </div>
    </div>
    <div id="addDocumentFormContainer" class="form-hidden-container flex-center-block hidden">

@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
+import com.builder.documents.builderdocuments.config.MvcConfig;
 import com.builder.documents.builderdocuments.models.LoginInfoEntity;
 import com.builder.documents.builderdocuments.models.PositionEntity;
 import com.builder.documents.builderdocuments.models.StaffEntity;
@@ -42,7 +43,7 @@ public class StaffController {
                     currentPage = Integer.parseInt(staffPage.get());
                else
                     currentPage = 1;
-               Page<StaffEntity> staffSet = staff.findAll(PageRequest.of(currentPage - 1, 1));
+               Page<StaffEntity> staffSet = staff.findAll(PageRequest.of(currentPage - 1, MvcConfig.PaginationSize));
                model.put("staff", staffSet);
                model.addAttribute("currentStaffPage", currentPage);
 
@@ -50,7 +51,7 @@ public class StaffController {
                     currentPage = Integer.parseInt(loginPage.get());
                else
                     currentPage = 1;
-               Page<LoginInfoEntity> users = loginInfos.findNotActiveUsers(PageRequest.of(currentPage - 1, 1));
+               Page<LoginInfoEntity> users = loginInfos.findNotActiveUsers(PageRequest.of(currentPage - 1, MvcConfig.PaginationSize));
                model.put("users", users);
                model.addAttribute("currentLoginPage", currentPage);
 

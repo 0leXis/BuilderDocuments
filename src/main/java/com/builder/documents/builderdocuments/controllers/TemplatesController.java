@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
+import com.builder.documents.builderdocuments.config.MvcConfig;
 import com.builder.documents.builderdocuments.models.DocumentTemplateEntity;
 import com.builder.documents.builderdocuments.models.interfaces.IDocumentTemplateService;
 import com.builder.documents.builderdocuments.models.repositories.DocumentTemplateRepository;
@@ -33,7 +34,7 @@ public class TemplatesController {
             currentPage = Integer.parseInt(page.get());
         else
             currentPage = 1;
-        Page<DocumentTemplateEntity> templatesSet = templates.findAll(PageRequest.of(currentPage - 1, 1));
+        Page<DocumentTemplateEntity> templatesSet = templates.findAll(PageRequest.of(currentPage - 1, MvcConfig.PaginationSize));
         model.put("templates", templatesSet);
         model.addAttribute("currentPage", currentPage);
         return "documentTemplates";

@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
+import com.builder.documents.builderdocuments.config.MvcConfig;
 import com.builder.documents.builderdocuments.models.DocumentEntity;
 import com.builder.documents.builderdocuments.models.interfaces.IDocumentsService;
 import com.builder.documents.builderdocuments.models.repositories.DocumentsRepository;
@@ -33,7 +34,7 @@ public class DocumentsController {
             currentPage = Integer.parseInt(page.get());
         else
             currentPage = 1;
-        Page<DocumentEntity> documentsSet = documents.findAll(PageRequest.of(currentPage - 1, 1));
+        Page<DocumentEntity> documentsSet = documents.findAll(PageRequest.of(currentPage - 1, MvcConfig.PaginationSize));
         model.put("documents", documentsSet);
         model.addAttribute("currentPage", currentPage);
         return "documents";

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<body>
+    <div th:fragment="pagination (pagedList,urlname)" th:if="${pagedList.totalPages gt 0}" class="margin-top-20 flex-center">
+        <span>Страница</span>
+        <ul class="flex-center">
+           <li th:classappend="${1 eq currentPage} ? 'current-page'">
+              <a class="margin-left-10" th:href="@{'/'+${urlname}+'?page=1'}">1</a>
+           </li>
+           <th:block th:switch="${pagedList.totalPages lt 6}" class="flex-center">
+              <th:block th:case="true" class="flex-center">
+                 <li th:each="page : ${#numbers.sequence( 2, pagedList.totalPages - 1, 1)}" th:classappend="${page eq currentPage} ? 'current-page'">
+                    <a class="margin-left-10" th:href="@{'/'+${urlname}+'?page={page}'(page=${page})}" th:text="${page}">2</a>
+                 </li>
+              </th:block>
+              <th:block th:case="false" class="flex-center">
+                 <li th:if="${currentPage gt 2}">
+                    <span class="margin-left-10">...</span>
+                 </li>
+                 <li th:each="page : ${#numbers.sequence( currentPage - 1, currentPage + 1, 1)}" th:classappend="${page eq currentPage} ? 'current-page'">
+                    <a class="margin-left-10" th:if="${page gt 1 and page lt pagedList.totalPages}" th:href="@{'/'+${urlname}+'?page={page}'(page=${page})}" th:text="${page}">3</a>
+                 </li>
+                 <li th:if="${currentPage lt pagedList.totalPages - 2}">
+                    <span class="margin-left-10">...</span>
+                 </li>
+              </th:block>
+           </th:block>
+           <li th:if="${pagedList.totalPages gt 1}" th:classappend="${pagedList.totalPages eq currentPage} ? 'current-page'">
+              <a class="margin-left-10" th:href="@{'/'+${urlname}+'?page={page}'(page=${pagedList.totalPages})}" th:text="${pagedList.totalPages}">4</a>
+           </li>
+        </ul>
+     </div>
+</body>
+</html>

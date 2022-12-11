@@ -257,10 +257,17 @@ a.href-button{
     color:#1d4561;
 }
 
-
 .nav-block{
     width: 150px;
     height: 30px;
+}
+
+.nav-block-mini{
+    width: 90px;
+    height: 30px;
+}
+
+.nav-block, .nav-block-mini{
     background: #FFD195;
     border-style: solid;
     border-color: #A67330;
@@ -283,13 +290,13 @@ a.href-button{
     border-width: 0px 1px 0px 1px;
 }
 
-a.nav-block, input[type=submit].nav-block-submit {
+a.nav-block, a.nav-block-mini, input[type=submit].nav-block-submit {
     color:#1d4561;
     text-decoration: none;
     transition: 0.3s;
 }
 
-a.nav-block:hover, input[type=submit].nav-block-submit:hover {
+a.nav-block:hover, a.nav-block-mini:hover, input[type=submit].nav-block-submit:hover {
     color:#FFD195;
     background: #1d4561;
     text-decoration: none;

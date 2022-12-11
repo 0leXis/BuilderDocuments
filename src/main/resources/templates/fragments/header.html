@@ -1,5 +1,12 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="https://www.thymeleaf.org">
+   <head>
+      <meta charset="UTF-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Document</title>
+      <link href="../../static/style.css" rel="stylesheet" type="text/css" />
+   </head>
 <body>
     <header th:fragment="header">
         <div class="padding-10 flex-center-block gradient-fill-blue">
@@ -8,7 +15,7 @@
         </div>
         <div class="flex-space-between nav-container">
            <div class="nav-block-submit">
-                <a class="nav-block-mini" th:href="@{/profile}">Профиль</a>
+                <a class="nav-block-mini flex-center-block" th:href="@{/profile}">Профиль</a>
            </div>
            <nav class="flex-center-block">
               <a class="nav-block flex-center-block" th:href="@{/documents}">Документы</a>

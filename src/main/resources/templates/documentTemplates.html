@@ -22,8 +22,12 @@
          <div class="table-big margin-top-20">
             <table>
                <tr class="table-header">
-                  <td>Id</td>
-                  <td>Название</td>
+                  <td th:replace="~{fragments/sortedColumn::sortedColumn('idDocumentTemplates', 'Id')}">
+                     <span>Id</span>
+                  </td>
+                  <td th:replace="~{fragments/sortedColumn::sortedColumn('name', 'Название')}">
+                     <span>Название</span>
+                  </td>
                   <td>Редактировать</td>
                   <td>Удалить</td>
                </tr>

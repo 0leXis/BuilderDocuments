@@ -12,6 +12,8 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 
 import com.builder.documents.builderdocuments.config.MvcConfig;
 import com.builder.documents.builderdocuments.models.DocumentTemplateEntity;
@@ -27,14 +29,27 @@ public class TemplatesController {
     IDocumentTemplateService templatesService;
 
     @RequestMapping(method = RequestMethod.GET)
-    public String documentsGet(ModelMap model, @RequestParam("page") Optional<String> page) {//TODO Recheck the code
+    public String documentsGet(ModelMap model, @RequestParam("page") Optional<String> page, @RequestParam("sort") Optional<String> sort, @RequestParam("desc") Optional<String> desc) {//TODO Recheck the code
       try {
         int currentPage;
         if(page.isPresent())
             currentPage = Integer.parseInt(page.get());
         else
             currentPage = 1;
-        Page<DocumentTemplateEntity> templatesSet = templates.findAll(PageRequest.of(currentPage - 1, MvcConfig.PaginationSize));
+
+        Page<DocumentTemplateEntity> templatesSet;
+
+        Direction sortDirection = Sort.Direction.ASC;
+        if(desc.isPresent())
+            sortDirection = Sort.Direction.DESC;
+
+        if(sort.isPresent())
+            templatesSet = templates.findAll(PageRequest.of(currentPage - 1, MvcConfig.PaginationSize, Sort.by(sortDirection, sort.get())));
+        else
+            templatesSet = templates.findAll(PageRequest.of(currentPage - 1, MvcConfig.PaginationSize));
+
+        model.put("sort", sort.isPresent() ? sort.get() : null);
+        model.put("desc", desc.isPresent() ? desc.get() : null);   
         model.put("templates", templatesSet);
         model.addAttribute("currentPage", currentPage);
         return "documentTemplates";

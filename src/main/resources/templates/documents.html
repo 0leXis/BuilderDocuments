@@ -23,11 +23,21 @@
          <div class="table-big">
             <table>
                <tr class="table-header">
-                  <td>Id</td>
-                  <td>Название</td>
-                  <td>Создатель</td>
-                  <td>Создан</td>
-                  <td>Изменен</td>
+                  <td th:replace="~{fragments/sortedColumn::sortedColumn('idDocument', 'Id')}">
+                     <span>Id</span>
+                  </td>
+                  <td th:replace="~{fragments/sortedColumn::sortedColumn('name', 'Название')}">
+                     <span>Название</span>
+                  </td>
+                  <td th:replace="~{fragments/sortedColumn::sortedColumn('creator', 'Создатель')}">
+                     <span>Создатель</span>
+                  </td>
+                  <td th:replace="~{fragments/sortedColumn::sortedColumn('dateCreated', 'Создан')}">
+                     <span>Создан</span>
+                  </td>
+                  <td th:replace="~{fragments/sortedColumn::sortedColumn('dateModified', 'Изменен')}">
+                     <span>Изменен</span>
+                  </td>
                   <td>Подробнее</td>
                </tr>
                <tr th:each="document : ${documents}">

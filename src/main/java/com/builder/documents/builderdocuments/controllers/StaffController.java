@@ -12,6 +12,8 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 
 import com.builder.documents.builderdocuments.config.MvcConfig;
 import com.builder.documents.builderdocuments.models.LoginInfoEntity;
@@ -36,14 +38,26 @@ public class StaffController {
    PositionRepository positions;
 
    @RequestMapping(method = RequestMethod.GET)
-   public String staffGet(ModelMap model, @RequestParam("staffPage") Optional<String> staffPage, @RequestParam("loginPage") Optional<String> loginPage) {
+   public String staffGet(ModelMap model, @RequestParam("staffPage") Optional<String> staffPage, @RequestParam("loginPage") Optional<String> loginPage, @RequestParam("sort") Optional<String> sort, @RequestParam("desc") Optional<String> desc) {
           try {
                int currentPage;
+
+               boolean sortUser = sort.isPresent() && 
+                    (sort.get().equals("idLoginInfo") ||
+                     sort.get().equals("login")) ? true : false;
+               Direction sortDirection = Sort.Direction.ASC;
+               if(desc.isPresent())
+                    sortDirection = Sort.Direction.DESC;
+
                if(staffPage.isPresent())
                     currentPage = Integer.parseInt(staffPage.get());
                else
                     currentPage = 1;
-               Page<StaffEntity> staffSet = staff.findAll(PageRequest.of(currentPage - 1, MvcConfig.PaginationSize));
+               Page<StaffEntity> staffSet;
+               if(sort.isPresent() && sortUser == false)
+                    staffSet = staff.findAll(PageRequest.of(currentPage - 1, MvcConfig.PaginationSize, Sort.by(sortDirection, sort.get())));
+                else
+                    staffSet = staff.findAll(PageRequest.of(currentPage - 1, MvcConfig.PaginationSize));
                model.put("staff", staffSet);
                model.addAttribute("currentStaffPage", currentPage);
 
@@ -51,13 +65,20 @@ public class StaffController {
                     currentPage = Integer.parseInt(loginPage.get());
                else
                     currentPage = 1;
-               Page<LoginInfoEntity> users = loginInfos.findNotActiveUsers(PageRequest.of(currentPage - 1, MvcConfig.PaginationSize));
+               Page<LoginInfoEntity> users;
+               if(sort.isPresent() && sortUser == true)
+                    users = loginInfos.findNotActiveUsers(PageRequest.of(currentPage - 1, MvcConfig.PaginationSize, Sort.by(sortDirection, sort.get())));
+               else
+                    users = loginInfos.findNotActiveUsers(PageRequest.of(currentPage - 1, MvcConfig.PaginationSize));
                model.put("users", users);
                model.addAttribute("currentLoginPage", currentPage);
 
                List<PositionEntity> positionsSet = positions.findAll();
                model.put("positions", positionsSet);
-
+       
+               model.put("sort", sort.isPresent() ? sort.get() : null);
+               model.put("desc", desc.isPresent() ? desc.get() : null); 
+               
                return "staff";
         }
         catch (NumberFormatException e) {
@@ -89,6 +110,6 @@ public class StaffController {
      else
          model.addAttribute("error", errorMessage);
 
-     return staffGet(model, Optional.of("1"), Optional.of("1"));
+     return staffGet(model, Optional.of("1"), Optional.of("1"), Optional.empty(), Optional.empty());
     }
 }

@@ -12,6 +12,8 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 
 import com.builder.documents.builderdocuments.config.MvcConfig;
 import com.builder.documents.builderdocuments.models.DocumentEntity;
@@ -27,14 +29,27 @@ public class DocumentsController {
     IDocumentsService documentsService;
 
     @RequestMapping(method = RequestMethod.GET)
-    public String documentsGet(ModelMap model, @RequestParam("page") Optional<String> page) {//TODO Recheck the code
+    public String documentsGet(ModelMap model, @RequestParam("page") Optional<String> page, @RequestParam("sort") Optional<String> sort, @RequestParam("desc") Optional<String> desc) {//TODO Recheck the code
       try {
         int currentPage;
         if(page.isPresent())
             currentPage = Integer.parseInt(page.get());
         else
             currentPage = 1;
-        Page<DocumentEntity> documentsSet = documents.findAll(PageRequest.of(currentPage - 1, MvcConfig.PaginationSize));
+
+        Page<DocumentEntity> documentsSet;
+
+        Direction sortDirection = Sort.Direction.ASC;
+        if(desc.isPresent())
+            sortDirection = Sort.Direction.DESC;
+
+        if(sort.isPresent())
+            documentsSet = documents.findAll(PageRequest.of(currentPage - 1, MvcConfig.PaginationSize, Sort.by(sortDirection, sort.get())));
+        else
+            documentsSet = documents.findAll(PageRequest.of(currentPage - 1, MvcConfig.PaginationSize));
+
+        model.put("sort", sort.isPresent() ? sort.get() : null);
+        model.put("desc", desc.isPresent() ? desc.get() : null);   
         model.put("documents", documentsSet);
         model.addAttribute("currentPage", currentPage);
         return "documents";
@@ -63,6 +78,6 @@ public class DocumentsController {
         }
         else
             model.addAttribute("error", errorMessage);
-        return documentsGet(model, Optional.of("1"));
+        return documentsGet(model, Optional.of("1"), Optional.empty(), Optional.empty());
     }
 }

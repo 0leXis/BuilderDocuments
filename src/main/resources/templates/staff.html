@@ -19,11 +19,21 @@
          <div class="table-big">
             <table>
                <tr class="table-header">
-                  <td>Id</td>
-                  <td>Имя</td>
-                  <td>Фамилия</td>
-                  <td>Должность</td>
-                  <td>Зарплата</td>
+                  <td th:replace="~{fragments/sortedColumn::sortedColumn('idStaff', 'Id')}">
+                     <span>Id</span>
+                  </td>
+                  <td th:replace="~{fragments/sortedColumn::sortedColumn('name', 'Имя')}">
+                     <span>Имя</span>
+                  </td>
+                  <td th:replace="~{fragments/sortedColumn::sortedColumn('lastname', 'Фамилия')}">
+                     <span>Фамилия</span>
+                  </td>
+                  <td th:replace="~{fragments/sortedColumn::sortedColumn('position', 'Должность')}">
+                     <span>Должность</span>
+                  </td>
+                  <td th:replace="~{fragments/sortedColumn::sortedColumn('salary', 'Зарплата')}">
+                     <span>Зарплата</span>
+                  </td>
                   <td>Редактировать</td>
                   <td>Удалить</td>
                </tr>
@@ -79,8 +89,12 @@
          <div class="table-big">
             <table>
                <tr class="table-header">
-                  <td>Id</td>
-                  <td>Логин</td>
+                  <td th:replace="~{fragments/sortedColumn::sortedColumn('idLoginInfo', 'Id')}">
+                     <span>Id</span>
+                  </td>
+                  <td th:replace="~{fragments/sortedColumn::sortedColumn('login', 'Логин')}">
+                     <span>Логин</span>
+                  </td>
                   <td>Добавить профиль</td>
                </tr>
                <tr th:each="user : ${users}">

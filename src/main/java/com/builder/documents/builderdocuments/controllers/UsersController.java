@@ -83,6 +83,6 @@ public class UsersController {
         else
             model.addAttribute("error", errorMessage);
 
-        return usersGet(model, Optional.of("1"), Optional.of(null), Optional.of(null));
+        return usersGet(model, Optional.of("1"), Optional.empty(), Optional.empty());
     }
 }

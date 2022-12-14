@@ -19,9 +19,15 @@
          <div class="table-big">
             <table>
                <tr class="table-header">
-                  <td>Id</td>
-                  <td>Логин</td>
-                  <td>Роль</td>
+                  <td th:replace="~{fragments/sortedColumn::sortedColumn('idLoginInfo', 'Id')}">
+                     <span>Id</span>
+                  </td>
+                  <td th:replace="~{fragments/sortedColumn::sortedColumn('login', 'Логин')}">
+                     <span>Логин</span>
+                  </td>
+                  <td th:replace="~{fragments/sortedColumn::sortedColumn('role', 'Роль')}">
+                     <span>Роль</span>
+                  </td>
                   <td>Редактировать</td>
                   <td>Удалить</td>
                </tr>
@@ -109,6 +115,7 @@
       </div>
    </div>
 
+   <script src="../static/scripts/formUtilities.js"></script>
    <script src="../static/scripts/users.js"></script>
 </body>
 </html>

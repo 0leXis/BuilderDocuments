@@ -1,31 +1,23 @@
 function editUser(id){
-    let userLoginCell =  document.getElementById(`user${id}login`);
-    let editLoginField =  document.getElementById("editLogin");
-    editLoginField.value = userLoginCell.innerText;
+    setValueFromCell("editLogin", `user${id}login`);
 
-    let editIdLoginInfoField = document.getElementById("editIdLoginInfoField");
-    editIdLoginInfoField.value = id;
+    setValueFromValue("editIdLoginInfoField", id);
 
-    let editUserFormContainer = document.getElementById("editUserFormContainer");
-    editUserFormContainer.classList.remove("hidden");
+    showFormDialog("editUserFormContainer");
 }
 
 function cancelEditUser(){
-    let editUserFormContainer = document.getElementById("editUserFormContainer");
-    editUserFormContainer.classList.add("hidden");
+    hideFormDialog("editUserFormContainer");
 }
 
 function deleteUser(id){
-    let deleteIdLoginInfoField = document.getElementById("deleteIdLoginInfoField");
-    deleteIdLoginInfoField.value = id;
+    setValueFromValue("deleteIdLoginInfoField", id);
 
-    let deleteUserFormContainer = document.getElementById("deleteUserFormContainer");
-    deleteUserFormContainer.classList.remove("hidden");
+    showFormDialog("deleteUserFormContainer");
 }
 
 function cancelDeleteUser(){
-    let deleteUserFormContainer = document.getElementById("deleteUserFormContainer");
-    deleteUserFormContainer.classList.add("hidden");
+    hideFormDialog("deleteUserFormContainer");
 }
 
 /* TODO Refactor all scripts and html */

@@ -29,3 +29,30 @@ function hideFormDialog(dialogName){
     let dialog = document.getElementById(dialogName);
     dialog.classList.add("hidden");
 }
+
+getParams = Object.fromEntries(new URLSearchParams(location.search));
+
+function sortBy(columnName){
+    pathString = window.location.pathname + "?";
+
+    if(getParams.sort == columnName){
+        if(getParams.desc == undefined){
+            getParams.desc = true;
+        }
+        else{
+            delete getParams.desc;
+        }
+    }
+    else{
+        if(getParams.desc != undefined){
+            delete getParams.desc;
+        }
+        getParams["sort"] = columnName;
+    }
+
+    Object.keys(getParams).forEach(function(key) {
+        pathString += key + "=" + getParams[key] + "&";
+    });
+
+    window.location.replace(pathString.substring(0, pathString.length - 1));
+}

@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<body>
+    <td th:fragment="sortedColumn (sortedColumn, displayName)" th:data-colName="${sortedColumn}" onclick="sortBy(this.getAttribute('data-colName'))">
+        <span th:text="${displayName}">Column</span>
+        <span th:if="${sort} == ${sortedColumn} and not ${desc}">🔺</span>
+        <span th:if="${sort} == ${sortedColumn} and ${desc}">🔻</span>
+    </td>
+ </body>
+ </html>

@@ -11,6 +11,8 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 
 import com.builder.documents.builderdocuments.config.MvcConfig;
 import com.builder.documents.builderdocuments.models.LoginInfoEntity;
@@ -27,14 +29,27 @@ public class UsersController {
    LoginInfoRepository loginInfos;
 
    @RequestMapping(method = RequestMethod.GET)
-   public String usersGet(ModelMap model, @RequestParam("page") Optional<String> page) {
+   public String usersGet(ModelMap model, @RequestParam("page") Optional<String> page, @RequestParam("sort") Optional<String> sort, @RequestParam("desc") Optional<String> desc) {
       try {
         int currentPage;
         if(page.isPresent())
             currentPage = Integer.parseInt(page.get());
         else
             currentPage = 1;
-        Page<LoginInfoEntity> users = loginInfos.findAll(PageRequest.of(currentPage - 1, MvcConfig.PaginationSize));
+
+        Page<LoginInfoEntity> users;
+
+        Direction sortDirection = Sort.Direction.ASC;
+        if(desc.isPresent())
+            sortDirection = Sort.Direction.DESC;
+
+        if(sort.isPresent())
+            users = loginInfos.findAll(PageRequest.of(currentPage - 1, MvcConfig.PaginationSize, Sort.by(sortDirection, sort.get())));
+        else
+            users = loginInfos.findAll(PageRequest.of(currentPage - 1, MvcConfig.PaginationSize));
+
+        model.put("sort", sort.isPresent() ? sort.get() : null);
+        model.put("desc", desc.isPresent() ? desc.get() : null);   
         model.put("users", users);
         model.addAttribute("currentPage", currentPage);
         return "users";
@@ -68,6 +83,6 @@ public class UsersController {
         else
             model.addAttribute("error", errorMessage);
 
-        return usersGet(model, Optional.of("1"));
+        return usersGet(model, Optional.of("1"), Optional.of(null), Optional.of(null));
     }
 }

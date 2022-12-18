@@ -1,6 +1,9 @@
 package com.builder.documents.builderdocuments.models;
 
 import javax.persistence.*;
+
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -17,19 +20,22 @@ public class ProjectEntity implements Serializable {
     private String name;
 
     @ManyToOne
-    @JoinColumn(name = "order", referencedColumnName = "idorders")
-    private OrderEntity order;
+    @JoinColumn(name = "orderid", referencedColumnName = "idorders")
+    private OrderEntity orderId;
 
     @OneToOne
     @JoinColumn(name = "currentstate", referencedColumnName = "idProjectsStates")
     private ProjectsStateEntity currentState;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "startdate")
     private Date startDate;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "estimateenddate")
     private Date estimateEndDate;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "enddate")
     private Date endDate;
 
@@ -38,10 +44,10 @@ public class ProjectEntity implements Serializable {
 
     public ProjectEntity() {}
 
-    public ProjectEntity(long idProjects, String name, OrderEntity order, Date startDate, Date estimateEndDate, Date endDate, BigDecimal cost) {
+    public ProjectEntity(long idProjects, String name, OrderEntity orderId, Date startDate, Date estimateEndDate, Date endDate, BigDecimal cost) {
         this.idProjects = idProjects;
         this.name = name;
-        this.order = order;
+        this.orderId = orderId;
         this.startDate = startDate;
         this.estimateEndDate = estimateEndDate;
         this.endDate = endDate;
@@ -65,11 +71,11 @@ public class ProjectEntity implements Serializable {
     }
 
     public OrderEntity getOrder() {
-        return order;
+        return orderId;
     }
 
-    public void setOrder(OrderEntity order) {
-        this.order = order;
+    public void setOrder(OrderEntity orderId) {
+        this.orderId = orderId;
     }
 
     public Date getStartDate() {

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+   xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+<head>
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Document</title>
+   <link href="../static/style.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+   <header th:replace="~{fragments/header::header}">
+   </header>
+   <div class="flex-center">
+      <div class="flex-column-center form-full-size gradient-fill-blue form-container margin-all-20">
+         <div class="flex-center margin-bottom-20">Проекты</div>
+         <div class="table-big">
+            <table>
+               <tr class="table-header">
+                  <td th:replace="~{fragments/sortedColumn::sortedColumn('idProjects', 'Id')}">
+                     <span>Id</span>
+                  </td>
+                  <td th:replace="~{fragments/sortedColumn::sortedColumn('name', 'Название')}">
+                     <span>Название</span>
+                  </td>
+                  <td th:replace="~{fragments/sortedColumn::sortedColumn('startdate', 'Дата начала')}">
+                     <span>Дата начала</span>
+                  </td>
+                  <td th:replace="~{fragments/sortedColumn::sortedColumn('cost', 'Стоимость')}">
+                     <span>Стоимость</span>
+                  </td>
+                  <td>Подробнее</td>
+               </tr>
+               <tr th:each="project : ${projects}">
+                  <td th:text="${project.idProjects}">1</td>
+                  <td th:id="'project'+${project.idProjects}+'name'" th:text="${project.name}">Name</td>
+                  <td th:id="'project'+${project.idProjects}+'startdate'" th:text="${project.startDate}">Creator</td>
+                  <td th:id="'project'+${project.idProjects}+'cost'" th:text="${project.cost}">12.12.2022</td>
+                  <td><button onclick="showProject(1)" th:onclick="'showProject('+${project.idProjects}+')'">🔍</button></td>
+                  </td>
+               </tr>
+            </table>
+         </div>
+         <div th:replace="~{fragments/pagination::pagination(${projects}, 'projects')}"></div>
+      </div>
+   </div>
+
+   <script src="../static/scripts/formUtilities.js"></script>
+   <script src="../static/scripts/projects.js"></script>
+</body>
+</html>

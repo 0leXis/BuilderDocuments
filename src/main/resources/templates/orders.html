@@ -106,7 +106,7 @@
    <div id="addProjectFormContainer" class="form-hidden-container flex-center-block hidden">
       <div class="flex-column-center form-450 gradient-fill-blue form-container margin-all-20">
          <h2>Добавить проект</h2>
-         <form th:action="@{/projects}" method="post" class="form-border">
+         <form th:action="@{/project}" method="post" class="form-border">
             <input type="hidden" value="add" name="mode"/>
             <input id="orderIdProjectInput" type="hidden" name="order" value="-1"/>
             <div class="form-field margin-top-20">

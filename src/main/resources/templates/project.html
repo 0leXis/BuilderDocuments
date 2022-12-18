@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+   xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+<head>
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Document</title>
+   <link href="../static/style.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+   <header th:replace="~{fragments/header::header}">
+   </header>
+   <div class="flex-center">
+      <div class="form-full-size gradient-fill-blue form-container margin-all-20">
+         <div class="flex-space-between">
+            <div>
+               <h1 class="bold font-size-20" th:text="${project.name}">Название</h1>
+               <div class="flex-start margin-top-10">
+                  <div class="bold">Клиент:</div>
+                  <div class="margin-left-10" th:text="${project.order.client.name}">Флекс Флекс</div>
+               </div>
+               <div class="flex-start margin-top-10">
+                  <div class="bold">Дата начала:</div>
+                  <div class="margin-left-10" th:text="${project.startDate}">11.11.2011</div>
+               </div>
+               <div class="flex-start margin-top-10">
+                <div class="bold">Дата окончания:</div>
+                <div class="margin-left-10" th:text="${project.estimateEndDate}">11.11.2011</div>
+             </div>
+             <div class="flex-start margin-top-10">
+                <div class="bold">Завершен:</div>
+                <div class="margin-left-10" th:text="${project.endDate}">11.11.2011</div>
+             </div>
+             <div class="flex-start margin-top-10">
+                <div class="bold">Стоимость:</div>
+                <div class="margin-left-10" th:text="${project.cost}">11.11.2011</div>
+             </div>
+               <div class="flex-start">
+                  <button type="button" class="margin-left-10" th:onclick="'createDocument('+${project.idProjects+')'">Создать документ</button>
+                  <button type="button" class="margin-left-10" th:onclick="'deleteProject('+${project.idProjects+')'">Удалить</button>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+
+   <script src="../static/scripts/formUtilities.js"></script>
+   <script src="../static/scripts/project.js"></script>
+</body>
+</html>

@@ -1,6 +1,9 @@
 package com.builder.documents.builderdocuments.models;
 
 import javax.persistence.*;
+
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -21,12 +24,15 @@ public class ProjectsStateEntity {
     @JoinColumn(name = "idstate", referencedColumnName = "idprojectstatenames")
     private ProjectStateNameEntity idState;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "startdate")
     private Date startDate;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "estimateenddate")
     private Date estimateEndDate;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "enddate")
     private Date endDate;
 

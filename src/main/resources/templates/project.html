@@ -38,9 +38,18 @@
                 <div class="bold">Стоимость:</div>
                 <div class="margin-left-10" th:text="${project.cost}">11.11.2011</div>
              </div>
-               <div class="flex-start margin-top-10">
-                  <button type="button" class="margin-left-10" th:onclick="'createDocument('+${project.idProjects+')'">Создать документ</button>
+             <form th:action="@{/project}" method="post">
+               <input type="hidden" value="createDocumentFrom" name="mode"/>
+               <input type="hidden" name="idProjects" th:value="${project.idProjects}"/>
+               <div class="form-field">
+                  <label class="form-label" for="uploadSecretKey"> ЭЦП: 
+                  </label>
+                  <input class="form-input-300" type="password" name="secretKey" id="uploadSecretKey"/> 
                </div>
+               <div class="flex-start margin-top-10">
+                  <button type="submit" class="margin-left-10">Создать документ</button>
+               </div>
+             </form>
                <h2 class="flex-start margin-top-10">Стадии</h2>
                <div class="flex-start margin-top-10 table-big">
                   <table>

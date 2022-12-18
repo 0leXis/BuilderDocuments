@@ -9,4 +9,5 @@ public interface IProjectService {
     public String addProject(ProjectEntity project);
     public String editProject(ProjectEntity project);
     public String deleteProject(ProjectEntity project);
+    public String createDocument(ProjectEntity project, String secretKey);
 }

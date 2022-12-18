@@ -71,7 +71,7 @@ public class ProjectController {
    }
     
     @RequestMapping(method = RequestMethod.POST)
-    public String staffPost(ProjectEntity data, ModelMap model, @RequestParam("mode") String mode) {
+    public String staffPost(ProjectEntity data, ModelMap model, @RequestParam("mode") String mode, @RequestParam("secretKey") Optional<String> secretKey) {
       String errorMessage = null;
       String successMessage = null;
       switch(mode)
@@ -80,6 +80,15 @@ public class ProjectController {
               errorMessage = projectService.addProject(data);//TODO Message output
               successMessage = "Project created";
               break;
+          case "createDocumentFrom":
+              if(!secretKey.isPresent())
+                errorMessage = "No key provided";
+              else{
+                errorMessage = projectService.createDocument(data, secretKey.get());
+                successMessage = "Document created";
+                if(errorMessage.startsWith("redirect"))
+                  return errorMessage;
+              }
       }
       if(errorMessage == null)
           model.addAttribute("success", successMessage);

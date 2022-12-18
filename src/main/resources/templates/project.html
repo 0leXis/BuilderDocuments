@@ -38,9 +38,62 @@
                 <div class="bold">Стоимость:</div>
                 <div class="margin-left-10" th:text="${project.cost}">11.11.2011</div>
              </div>
-               <div class="flex-start">
+               <div class="flex-start margin-top-10">
                   <button type="button" class="margin-left-10" th:onclick="'createDocument('+${project.idProjects+')'">Создать документ</button>
-                  <button type="button" class="margin-left-10" th:onclick="'deleteProject('+${project.idProjects+')'">Удалить</button>
+               </div>
+               <h2 class="flex-start margin-top-10">Стадии</h2>
+               <div class="flex-start margin-top-10 table-big">
+                  <table>
+                     <tr class="table-header">
+                        <td th:replace="~{fragments/sortedColumn::sortedColumn('idProjectsStates', 'Id')}">
+                           <span>Id</span>
+                        </td>
+                        <td th:replace="~{fragments/sortedColumn::sortedColumn('idState', 'Название')}">
+                           <span>Название</span>
+                        </td>
+                        <td th:replace="~{fragments/sortedColumn::sortedColumn('startDate', 'Дата начала')}">
+                           <span>Дата начала</span>
+                        </td>
+                        <td th:replace="~{fragments/sortedColumn::sortedColumn('estimateEndDate', 'Дата окончания')}">
+                           <span>Дата окончания</span>
+                        </td>
+                        <td th:replace="~{fragments/sortedColumn::sortedColumn('endDate', 'Завершен')}">
+                           <span>Завершен</span>
+                        </td>
+                     </tr>
+                     <tr th:each="projectState : ${projectStates}">
+                        <td th:text="${projectState.idProjectsStates}">1</td>
+                        <td th:id="'projectState'+${projectState.idProjectsStates}+'name'" th:text="${projectState.idState.name}">Name</td>
+                        <td th:id="'projectState'+${projectState.idProjectsStates}+'startDate'" th:text="${projectState.startDate}">Date</td>
+                        <td th:id="'projectState'+${projectState.idProjectsStates}+'estimateEndDate'" th:text="${projectState.estimateEndDate}">Date</td>
+                        <td th:id="'projectState'+${projectState.idProjectsStates}+'endDate'" th:text="${projectState.endDate}">Date</td>
+                     </tr>
+                  </table>
+               </div>
+               <h2 class="flex-start margin-top-10">Материалы</h2>
+               <div class="flex-start margin-top-10 table-big">
+                  <table>
+                     <tr class="table-header">
+                        <td th:replace="~{fragments/sortedColumn::sortedColumn('idProjectMaterials', 'Id')}">
+                           <span>Id</span>
+                        </td>
+                        <td th:replace="~{fragments/sortedColumn::sortedColumn('idMaterial', 'Название')}">
+                           <span>Название</span>
+                        </td>
+                        <td th:replace="~{fragments/sortedColumn::sortedColumn('estimateCount', 'Закуплено')}">
+                           <span>Закуплено</span>
+                        </td>
+                        <td th:replace="~{fragments/sortedColumn::sortedColumn('usedCount', 'Использорвано')}">
+                           <span>Использорвано</span>
+                        </td>
+                     </tr>
+                     <tr th:each="projectMaterial : ${projectMaterials}">
+                        <td th:text="${projectMaterial.idProjectMaterials}">1</td>
+                        <td th:id="'order'+${projectMaterial.idProjectMaterials}+'name'" th:text="${projectMaterial.idMaterial.name}">Name</td>
+                        <td th:id="'order'+${projectMaterial.idProjectMaterials}+'estimateCount'" th:text="${projectMaterial.estimateCount}">Name</td>
+                        <td th:id="'order'+${projectMaterial.idProjectMaterials}+'usedCount'" th:text="${projectMaterial.usedCount}">Name</td>
+                     </tr>
+                  </table>
                </div>
             </div>
          </div>

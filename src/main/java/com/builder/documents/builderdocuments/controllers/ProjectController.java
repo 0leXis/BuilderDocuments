@@ -21,11 +21,15 @@ import com.builder.documents.builderdocuments.config.MvcConfig;
 import com.builder.documents.builderdocuments.models.LoginInfoEntity;
 import com.builder.documents.builderdocuments.models.PositionEntity;
 import com.builder.documents.builderdocuments.models.ProjectEntity;
+import com.builder.documents.builderdocuments.models.ProjectMaterialEntity;
+import com.builder.documents.builderdocuments.models.ProjectsStateEntity;
 import com.builder.documents.builderdocuments.models.StaffEntity;
 import com.builder.documents.builderdocuments.models.interfaces.IStaffService;
 import com.builder.documents.builderdocuments.models.repositories.LoginInfoRepository;
 import com.builder.documents.builderdocuments.models.repositories.PositionRepository;
+import com.builder.documents.builderdocuments.models.repositories.ProjectMaterialRepository;
 import com.builder.documents.builderdocuments.models.repositories.ProjectsRepository;
+import com.builder.documents.builderdocuments.models.repositories.ProjectsStatesRepository;
 import com.builder.documents.builderdocuments.models.repositories.StaffRepository;
 import com.builder.documents.builderdocuments.models.services.ProjectService;
 
@@ -35,6 +39,10 @@ public class ProjectController {
 
     @Autowired
     ProjectsRepository projectsRepo;
+    @Autowired
+    ProjectsStatesRepository projectsStatesRepo;
+    @Autowired
+    ProjectMaterialRepository projectMaterialsRepo;
     @Autowired
     ProjectService projectService;
 
@@ -49,7 +57,12 @@ public class ProjectController {
         if(!project.isPresent())
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Unable to find resource");
 
+        List<ProjectsStateEntity> projectStates = projectsStatesRepo.findByIdProject(project.get());
+        List<ProjectMaterialEntity> projectMaterials = projectMaterialsRepo.findByIdProject(project.get());
+
         model.put("project", project.get());
+        model.put("projectStates", projectStates);
+        model.put("projectMaterials", projectMaterials);
         return "project";
       }
       catch (NumberFormatException e) {

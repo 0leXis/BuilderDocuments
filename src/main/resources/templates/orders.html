@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+   xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+<head>
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Document</title>
+   <link href="../static/style.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+   <header th:replace="~{fragments/header::header}">
+   </header>
+   <div class="flex-center">
+      <div class="flex-column-center form-full-size gradient-fill-blue form-container margin-all-20">
+         <div class="flex-center margin-bottom-20">Список заказов</div>
+         <div>
+            <button type="button" class="margin-bottom-10" onclick="addOrder()">Добавить заказ</button>
+         </div>
+         <div class="table-big">
+            <table>
+               <tr class="table-header">
+                  <td th:replace="~{fragments/sortedColumn::sortedColumn('idOrders', 'Id')}">
+                     <span>Id</span>
+                  </td>
+                  <td th:replace="~{fragments/sortedColumn::sortedColumn('name', 'Название')}">
+                     <span>Название</span>
+                  </td>
+                  <td th:replace="~{fragments/sortedColumn::sortedColumn('client', 'Клиент')}">
+                     <span>Клиент</span>
+                  </td>
+                  <td>Создать проект</td>
+                  <td>Редактировать</td>
+                  <td>Удалить</td>
+               </tr>
+               <tr th:each="order : ${orders}">
+                  <td th:text="${order.idOrders}">1</td>
+                  <td th:id="'order'+${order.idOrders}+'name'" th:text="${order.name}">Name</td>
+                  <td th:id="'order'+${order.idOrders}+'client'" th:text="${order.client.name}+' ('+${order.client.idClients}+')'">Customer</td>
+                  <td class="hidden" th:id="'order'+${order.idOrders}+'description'" th:text="${order.description}">Desc</td>
+                  <td><button onclick="createProject(1)" th:onclick="'createProject('+${order.idOrders}+')'">📈</button></td>
+                  <td><button onclick="editOrder(1)" th:onclick="'editOrder('+${order.idOrders}+')'">✎</button></td>
+                  <td><button onclick="deleteOrder(1)" th:onclick="'deleteOrder('+${order.idOrders}+')'">❌</button></td>
+               </tr>
+            </table>
+         </div>
+         <div th:replace="~{fragments/pagination::pagination(${orders}, 'orders')}"></div>
+      </div>
+   </div>
+   <div id="addEditOrderFormContainer" class="form-hidden-container flex-center-block hidden">
+      <div class="flex-column-center form-450 gradient-fill-blue form-container margin-all-20">
+         <h2>Редактировать заказ</h2>
+         <form id="addEditOrderForm" th:action="@{/orders}" method="post" class="form-border">
+            <input type="hidden" value="add" name="mode" id="addEditModeField"/>
+            <input id="clientIdInput" type="hidden" name="client" value="-1"/>
+            <input type="hidden" value="0" name="idOrders" id="addEditIdOrdersField"/>
+            <div class="form-field margin-top-20">
+               <label class="form-label" for="addEditName"> Название: 
+               </label>
+               <input class="form-input-300" type="text" name="name" id="addEditName"/> 
+            </div>
+            <div class="form-field">
+               <label class="form-label" for="addEditClient"> Клиент: 
+               </label>
+               <input class="form-input-300" type="text" id="addEditClient" list="clientList"/> 
+               <datalist id="clientList">
+                <option th:each="client : ${clients}" th:value="${client.name}+' ('+${client.idClients}+')'" th:data-clientid="${client.idClients}" value="Иван Иванов (Flexis)" data-clientid="1">
+             </datalist>
+            </div>
+            <div class="form-field">
+                <label class="form-label" for="addEditDescription"> Описание:
+                </label>
+                <textarea class="form-input-300" name="description" id="addEditDescription">
+                </textarea>
+             </div>
+            <div class="flex-center">
+               <div class="form-field">
+                  <input id="addEditSubmit" type="button" value="Редактировать" onclick="submitAddEditOrder()"/>
+               </div>
+               <div class="form-field">
+                  <button type="button" name="cancelEdit" onclick="cancelAddEditOrder()">Отмена</button>
+               </div>
+            </div>
+         </form>
+      </div>
+   </div>
+   <div id="deleteOrderFormContainer" class="form-hidden-container flex-center-block hidden">
+      <div class="flex-column-center gradient-fill-blue form-container margin-all-20">
+         <form th:action="@{/orders}" method="post" class="form-border">
+            <div>Заказ будет удален. Вы уверены?</div>
+            <input type="hidden" value="delete" name="mode"/>
+            <input type="hidden" value="0" name="idOrders" id="deleteIdOrdersField"/>
+            <div class="flex-center">
+               <div class="form-field">
+                  <input type="submit" value="Да" />
+               </div>
+               <div class="form-field">
+                  <button type="button" name="cancelEdit" onclick="cancelDeleteOrder()">Отмена</button>
+               </div>
+            </div>
+         </form>
+      </div>
+   </div>
+   <div id="addProjectFormContainer" class="form-hidden-container flex-center-block hidden">
+      <div class="flex-column-center form-450 gradient-fill-blue form-container margin-all-20">
+         <h2>Добавить проект</h2>
+         <form th:action="@{/projects}" method="post" class="form-border">
+            <input type="hidden" value="add" name="mode"/>
+            <input id="orderIdProjectInput" type="hidden" name="order" value="-1"/>
+            <div class="form-field margin-top-20">
+               <label class="form-label" for="addProjectName"> Название: 
+               </label>
+               <input class="form-input-300" type="text" name="name" id="addProjectName"/> 
+            </div>
+            <div class="form-field">
+                <label class="form-label" for="addStartDate"> Дата начала:
+                </label>
+                <input type="date" class="form-input-300" name="startDate" id="addStartDate"/>
+             </div>
+             <div class="form-field">
+               <label class="form-label" for="addEndEstDate"> Дата окончания:
+               </label>
+               <input type="date" class="form-input-300" name="estimateEndDate" id="addEndEstDate"/>
+            </div>
+            <div class="form-field">
+               <label class="form-label" for="addСost"> Стоимость: <!-- TODO Validation -->
+               </label>
+               <input type="text" class="form-input-300" name="cost" id="addСost"/>
+            </div>
+            <div class="flex-center">
+               <div class="form-field">
+                  <input type="submit" value="Добавить"/>
+               </div>
+               <div class="form-field">
+                  <button type="button" name="cancelEdit" onclick="cancelAddProject()">Отмена</button>
+               </div>
+            </div>
+         </form>
+      </div>
+   </div>
+
+   <script src="../static/scripts/formUtilities.js"></script>
+   <script src="../static/scripts/orders.js"></script>
+</body>
+</html>

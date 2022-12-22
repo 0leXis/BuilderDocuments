@@ -45,7 +45,7 @@ public class ProjectService implements IProjectService{
         Optional<ProjectEntity> projectEntity = projectRepo.findById(project.getIdProjects());
         if(projectEntity.isPresent())
             return "Project exists";
-        //TODO Transactions
+
         if(project.getName() == null || project.getName().length() < 1)
             return "Enter name";
 
@@ -59,7 +59,7 @@ public class ProjectService implements IProjectService{
         if(!projectEntity.isPresent())
             return "Staff doesn't exists";
         if(project.getName() == null || project.getName().length() < 1)
-            return "Enter name";//TODO Validate
+            return "Enter name";
 
         projectRepo.save(project);
         return null;
@@ -72,7 +72,7 @@ public class ProjectService implements IProjectService{
             return "Project doesn't exists";
         }
 
-        projectRepo.delete(project);//TODO Foreign keys try catch
+        projectRepo.delete(project);
         return null;
     }
 

@@ -72,11 +72,11 @@ public class DocumentEditController {
                 errorMessage = "No approver id provided";
                 break;
              }
-             errorMessage = documentService.addApprover(approverId.get(), item);//TODO Message output
+             errorMessage = documentService.addApprover(approverId.get(), item);
              successMessage = "Approver added";
              break;
          case "deleteApprover":
-            errorMessage = documentService.deleteApprover(approverId.get());//TODO Message output
+            errorMessage = documentService.deleteApprover(approverId.get());
             successMessage = "Approver deleted";
             break;
          case "changeAssignee":
@@ -85,11 +85,11 @@ public class DocumentEditController {
                 errorMessage = "No assignee id provided";
                 break;
              }
-             errorMessage = documentService.changeAssignee(assigneeId.get(), item);//TODO Message output
+             errorMessage = documentService.changeAssignee(assigneeId.get(), item);
              successMessage = "Assignee changed";
              break;
           case "editDocument":
-            errorMessage = documentService.editDocument(data);//TODO Message output
+            errorMessage = documentService.editDocument(data);
             successMessage = "Document changed";
             break;
      }

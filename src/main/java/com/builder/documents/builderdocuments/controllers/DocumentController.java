@@ -19,6 +19,7 @@ import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 
 import com.builder.documents.builderdocuments.models.DocumentApproverEntity;
 import com.builder.documents.builderdocuments.models.DocumentEntity;
@@ -79,7 +80,7 @@ public class DocumentController {
       }
    }
 
-   @RequestMapping(value = "/document/download", method = RequestMethod.GET)
+   @RequestMapping(value = "/document/download", method = RequestMethod.GET, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
    @ResponseBody
    public FileSystemResource getFile(@RequestParam("item") String item) {
     try {

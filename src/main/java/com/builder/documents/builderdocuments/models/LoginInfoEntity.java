@@ -23,7 +23,7 @@ public class LoginInfoEntity implements Serializable {
 
     public LoginInfoEntity() {}
 
-    public LoginInfoEntity(long idLoginInfo, String login, String password, String salt) { //TODO link
+    public LoginInfoEntity(long idLoginInfo, String login, String password, String salt) {
         this.idLoginInfo = idLoginInfo;
         this.login = login;
         this.password = password;

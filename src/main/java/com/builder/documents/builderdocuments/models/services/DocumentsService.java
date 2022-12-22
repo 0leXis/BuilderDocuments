@@ -51,7 +51,7 @@ import org.hibernate.sql.Template;
 
 @Service
 public class DocumentsService implements IDocumentsService {
-    public static String documentsPath = "E:\\Java\\BuilderDocuments\\builderdocuments\\src\\main\\resources\\storage\\"; //TODO To config
+    public static String documentsPath = "E:\\Java\\BuilderDocuments\\builderdocuments\\src\\main\\resources\\storage\\";
 
     @Autowired
     IXMLValidationService xmlService;
@@ -65,7 +65,6 @@ public class DocumentsService implements IDocumentsService {
     DocumentApproversRepository approversRepo;
 
     public String addDocument(DocumentEntity info, IDocumentSaver saver, String secretKey) {
-        //TODO Localization
         if(info.getName().length() < 1)
             return "Enter name";
         if(info.getDescription() == null)
@@ -98,7 +97,6 @@ public class DocumentsService implements IDocumentsService {
             if(compareHashes(info, creator.get().getOpenKey())){
                 try{
                     Files.deleteIfExists(Paths.get(info.getPath()));
-                    //TODO WHY EXCEPTOION??????
                 }
                 catch (Exception e) {}
                 return "Invalid sign";
@@ -107,7 +105,6 @@ public class DocumentsService implements IDocumentsService {
         catch(Exception e){
             try{
                 Files.deleteIfExists(Paths.get(info.getPath()));
-                //TODO WHY EXCEPTOION??????
             }
             catch (Exception ex) {}
             return "Error comparing hashes";
@@ -144,7 +141,6 @@ public class DocumentsService implements IDocumentsService {
             if(compareHashes(infoTmp, document.get().getCreator().getOpenKey())){
                 try{
                     Files.deleteIfExists(Paths.get(infoTmp.getPath()));
-                    //TODO WHY EXCEPTOION??????
                 }
                 catch (Exception e) {}
                 return "Invalid sign";
@@ -153,7 +149,6 @@ public class DocumentsService implements IDocumentsService {
         catch(Exception e){
             try{
                 Files.deleteIfExists(Paths.get(infoTmp.getPath()));
-                //TODO WHY EXCEPTOION??????
             }
             catch (Exception ex) {}
             return "Error comparing hashes";
@@ -161,8 +156,6 @@ public class DocumentsService implements IDocumentsService {
 
         try{
             Files.deleteIfExists(Paths.get(document.get().getPath()));
-            //TODO WHY EXCEPTOION??????
-            //REFACTOR THIS FOR THE GODS SAKE
         }
         catch (Exception ex) {}
         
@@ -213,8 +206,7 @@ public class DocumentsService implements IDocumentsService {
         }
 
         try{
-            Files.deleteIfExists(Paths.get(info.getPath()));
-            //TODO WHY EXCEPTOION??????
+            Files.deleteIfExists(Paths.get(documentEntity.get().getPath()));
         }
         catch (Exception e) {}
 

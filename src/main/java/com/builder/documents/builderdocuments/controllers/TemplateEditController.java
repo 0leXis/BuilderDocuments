@@ -34,7 +34,7 @@ public class TemplateEditController {
     IDocumentTemplateService templatesService;
 
     @RequestMapping(method = RequestMethod.GET)
-    public String templateEditGet(ModelMap model, @RequestParam("item") String item) {//TODO Recheck the code
+    public String templateEditGet(ModelMap model, @RequestParam("item") String item) {
         try {
             Optional<DocumentTemplateEntity> template;
             String templateText;

@@ -29,7 +29,7 @@ public class DocumentsController {
     IDocumentsService documentsService;
 
     @RequestMapping(method = RequestMethod.GET)
-    public String documentsGet(ModelMap model, @RequestParam("page") Optional<String> page, @RequestParam("sort") Optional<String> sort, @RequestParam("desc") Optional<String> desc) {//TODO Recheck the code
+    public String documentsGet(ModelMap model, @RequestParam("page") Optional<String> page, @RequestParam("sort") Optional<String> sort, @RequestParam("desc") Optional<String> desc) {
       try {
         int currentPage;
         if(page.isPresent())

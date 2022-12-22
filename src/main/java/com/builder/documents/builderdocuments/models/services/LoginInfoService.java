@@ -38,7 +38,7 @@ public class LoginInfoService implements ILoginInfoService {
             return "Password length must be 8 or higher, should include at least one uppercase letter, lowercase letter and digit";
         }
 
-      info.setRole(Role.USER); //TODO Roles
+      info.setRole(Role.USER);
       info.setPassword(bCryptPasswordEncoder.encode(info.getPassword()));
       loginInfos.save(info);
       return null;
@@ -61,7 +61,7 @@ public class LoginInfoService implements ILoginInfoService {
             return "Password length must be 8 or higher, should include at least one uppercase letter, lowercase letter and digit";
         }
 
-      info.setRole(Role.USER); //TODO Roles
+      info.setRole(Role.USER);
       info.setPassword(bCryptPasswordEncoder.encode(info.getPassword()));
       loginInfos.save(info);
       return null;

@@ -104,6 +104,6 @@ public class DocumentEditXMLController {
         }
         else
             model.addAttribute("error", errorMessage);
-        return "redirect:/documents";// TODO check redirects and error placement
+        return "redirect:/documents";
     }
 }

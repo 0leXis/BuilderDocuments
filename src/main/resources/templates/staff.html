@@ -142,7 +142,7 @@
    </div>
    <div id="addEditStaffFormContainer" class="form-hidden-container flex-center-block hidden">
       <div class="flex-column-center form-450 gradient-fill-blue form-container margin-all-20">
-         <h2 id="addEditHeader">Редактировать сотрудника</h2> <!--TODO change header-->
+         <h2 id="addEditHeader">Редактировать сотрудника</h2>
          <form th:action="@{/staff}" method="post" class="form-border">
             <input type="hidden" value="edit" name="mode" id="addEditModeField"/>
             <input type="hidden" value="0" name="idStaff" id="addEditIdStaffField"/>
@@ -165,7 +165,7 @@
                </select>
             </div>
             <div class="form-field">
-               <label class="form-label" for="addEditSalary"> Зарплата: <!-- TODO Validation -->
+               <label class="form-label" for="addEditSalary"> Зарплата:
                </label>
                <input class="form-input-300" type="text" name="salary" id="addEditSalary"/> 
             </div>

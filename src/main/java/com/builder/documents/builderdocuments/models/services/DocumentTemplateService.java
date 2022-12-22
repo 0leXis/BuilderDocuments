@@ -41,7 +41,7 @@ import com.builder.documents.builderdocuments.models.repositories.DocumentTempla
 
 @Service
 public class DocumentTemplateService implements IDocumentTemplateService {
-    public static String templatesPath = "E:\\Java\\BuilderDocuments\\builderdocuments\\src\\main\\resources\\storage\\"; //TODO To config
+    public static String templatesPath = "E:\\Java\\BuilderDocuments\\builderdocuments\\src\\main\\resources\\storage\\";
 
     @Autowired
     DocumentTemplateRepository templateRepo;
@@ -81,7 +81,6 @@ public class DocumentTemplateService implements IDocumentTemplateService {
         catch(SAXException e){
             try{
                 Files.deleteIfExists(Paths.get(templateFile.getPath()));
-                //TODO WHY EXCEPTOION??????
             }
             catch (IOException ex) {}
             return "Error parsing xsd: " + e.getMessage();
@@ -119,7 +118,6 @@ public class DocumentTemplateService implements IDocumentTemplateService {
         catch(IOException e){
             try{
                 Files.deleteIfExists(Paths.get(templateFile.getPath()));
-                //TODO WHY EXCEPTOION??????
             }
             catch (IOException ex) {}
             return "Error uploading document";
@@ -146,8 +144,7 @@ public class DocumentTemplateService implements IDocumentTemplateService {
         }
 
         try{
-            Files.deleteIfExists(Paths.get(info.getPath()));
-            //TODO WHY EXCEPTOION??????
+            Files.deleteIfExists(Paths.get(template.get().getPath()));
         }
         catch (Exception e) {}
 

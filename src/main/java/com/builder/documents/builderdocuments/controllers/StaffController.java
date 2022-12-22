@@ -93,7 +93,7 @@ public class StaffController {
      switch(mode)
      {
          case "add":
-             errorMessage = staffService.addStaff(data);//TODO Message output
+             errorMessage = staffService.addStaff(data);
              successMessage = "Staff created";
              break;
          case "edit":

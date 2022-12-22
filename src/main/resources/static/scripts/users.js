@@ -19,5 +19,3 @@ function deleteUser(id){
 function cancelDeleteUser(){
     hideFormDialog("deleteUserFormContainer");
 }
-
-/* TODO Refactor all scripts and html */

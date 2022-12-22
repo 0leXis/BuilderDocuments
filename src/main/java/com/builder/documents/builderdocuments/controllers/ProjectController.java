@@ -77,7 +77,7 @@ public class ProjectController {
       switch(mode)
       {
           case "add":
-              errorMessage = projectService.addProject(data);//TODO Message output
+              errorMessage = projectService.addProject(data);
               successMessage = "Project created";
               break;
           case "createDocumentFrom":

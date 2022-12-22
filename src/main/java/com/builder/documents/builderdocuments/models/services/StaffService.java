@@ -39,7 +39,7 @@ public class StaffService implements IStaffService {
         Optional<StaffEntity> staffEntity = staffRepo.findByLoginInfo(staff.getLoginInfo());
         if(staffEntity.isPresent())
             return "Staff exists";
-        //TODO Transactions
+
         if(staff.getName().length() < 1 || staff.getLastname().length() < 1)
             return "Enter name and lastname";
         if(staff.getSalary().compareTo(BigDecimal.valueOf(0)) < 0)
@@ -75,7 +75,7 @@ public class StaffService implements IStaffService {
             return "Staff doesn't exists";
         }
 
-        staffRepo.delete(staff);//TODO Foreign keys try catch
+        staffRepo.delete(staff);
         return null;
     }
     

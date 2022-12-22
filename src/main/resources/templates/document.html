@@ -57,7 +57,7 @@
             <div class="margin-all-20 width-300">
                <div class="bold margin-bottom-10">Исполнитель:</div>
                <div>
-                  <span th:if="${document.assignee}" th:text="${document.assignee.name}+' '+${document.assignee.lastname}">Иван Иванов</span><!--TODO profile link-->
+                  <span th:if="${document.assignee}" th:text="${document.assignee.name}+' '+${document.assignee.lastname}">Иван Иванов</span>
                   <span th:unless="${document.assignee}">Не назначен</span>
                </div>
                <div class="bold margin-top-10 margin-bottom-10">Согласовано:</div>

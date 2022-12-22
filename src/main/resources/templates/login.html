@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Spring Security Example </title>
+    <title>Builder's documents - login</title>
     <link href="../static/style.css" rel="stylesheet" type="text/css" />
 </head>
 
@@ -16,23 +16,23 @@
             <img src="../static/BDocsLogo.png" th:src="@{static/BDocsLogo.png}" alt="Builder's Documents" width="300" height="112" />
             <form th:action="@{/login}" method="post" class="form-border">
                 <div class="form-field form-error-field flex-center" th:if="${param.error}">
-                    Invalid username and password.
+                    Введен неверный логин или пароль.
                 </div>
                 <div class="form-field flex-center" th:if="${param.logout}">
-                    You have been logged out.
+                    Произведен выход из системы.
                 </div>
                 <div class="form-field margin-top-20">
-                    <label class="form-label" for="username"> User Name:
+                    <label class="form-label" for="username"> Логин:
                     </label>
                     <input class="form-input-300" type="text" name="username" id="username" />
                 </div>
                 <div class="form-field">
-                    <label class="form-label" for="password"> Password:</label>
+                    <label class="form-label" for="password"> Пароль:</label>
                     <input class="form-input-300" type="password" name="password" id="password" />
                 </div>
                 <div class="flex-center">
                     <div class="form-field">
-                        <input type="submit" value="Sign In" />
+                        <input type="submit" value="Вход" />
                     </div>
                 </div>
             </form>
